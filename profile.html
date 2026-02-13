@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - NearByNow</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Additional styles for profile page */
+        .profile-page {
+            background: #f9fafb;
+            min-height: 100vh;
+            padding: 2rem 0 3rem;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .profile-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        /* Profile Sidebar */
+        .profile-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto 1rem;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-type {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        .user-type-badge {
+            display: inline-block;
+            padding: 0.375rem 0.875rem;
+            background: #eff6ff;
+            color: #2563eb;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2563eb;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-profile {
+            padding: 0.75rem 1rem;
+            background: white;
+            color: #2563eb;
+            border: 2px solid #2563eb;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-profile:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-profile.danger {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .btn-profile.danger:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .menu-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-card h3 {
+            font-size: 1rem;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .menu-item {
+            padding: 0.875rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-item:hover,
+        .menu-item.active {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .menu-item i {
+            width: 20px;
+        }
+
+        /* Main Content */
+        .profile-content {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .content-header h2 {
+            font-size: 1.5rem;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .content-header h2 i {
+            color: #2563eb;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 0.5rem;
+            background: #f3f4f6;
+            padding: 0.375rem;
+            border-radius: 0.5rem;
+        }
+
+        .tab-btn {
+            padding: 0.625rem 1.25rem;
+            background: transparent;
+            border: none;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #6b7280;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #2563eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6b7280;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #d1d5db;
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+
+        .empty-state p {
+            margin-bottom: 1.5rem;
+        }
+
+        .items-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .item-card {
+            padding: 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .item-card:hover {
+            border-color: #2563eb;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .item-badge {
+            padding: 0.375rem 0.875rem;
+            border-radius: 0.375rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .item-badge.daily {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .item-badge.monthly {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .item-badge.contract {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-icon-small {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #f3f4f6;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-icon-small:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-icon-small.danger:hover {
+            background: #ef4444;
+        }
+
+        .item-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .item-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .item-description {
+            color: #6b7280;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        /* Edit Profile Form */
+        .edit-form {
+            max-width: 600px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #374151;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-save {
+            padding: 0.875rem 2rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-save:hover {
+            background: #1e40af;
+        }
+
+        .btn-cancel {
+            padding: 0.875rem 2rem;
+            background: white;
+            color: #6b7280;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel:hover {
+            background: #f9fafb;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-sidebar {
+                order: 1;
+            }
+
+            .profile-content {
+                order: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .tab-buttons {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .profile-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .item-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>NearByNow</span>
+                </div>
+                
+                <div class="nav-links" id="navLinks">
+                    <a href="index.html">Home</a>
+                    <a href="jobs.html">Jobs</a>
+                    <a href="services.html">Services</a>
+                    <a href="profile.html" class="active" id="profileLink">Profile</a>
+                    <a href="login.html" id="loginLink" style="display: none;">Login</a>
+                    <button class="btn btn-primary" id="logoutBtn">Logout</button>
+                </div>
+
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1><i class="fas fa-user-circle"></i> My Profile</h1>
+            <p>Manage your account and activity</p>
+        </div>
+    </div>
+
+    <!-- Profile Page Content -->
+    <div class="profile-page">
+        <div class="container">
+            <div class="profile-container">
+                
+                <!-- Profile Sidebar -->
+                <aside class="profile-sidebar">
+                    <!-- Profile Card -->
+                    <div class="profile-card">
+                        <div class="profile-avatar" id="userAvatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h2 class="profile-name" id="userName">Loading...</h2>
+                        <p class="profile-type" id="userLocation"></p>
+                        <div class="user-type-badge" id="userTypeBadge"></div>
+
+                        <div class="profile-stats" id="userStats">
+                            <!-- Stats will be loaded by JavaScript -->
+                        </div>
+
+                        <div class="profile-actions">
+                            <button class="btn-profile" onclick="showSection('edit-profile')">
+                                <i class="fas fa-edit"></i> Edit Profile
+                            </button>
+                            <button class="btn-profile danger" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quick Menu -->
+                    <div class="menu-card">
+                        <h3>Quick Menu</h3>
+                        <ul class="menu-list">
+                            <li class="menu-item active" onclick="showSection('overview')">
+                                <i class="fas fa-home"></i>
+                                <span>Overview</span>
+                            </li>
+                            <li class="menu-item" onclick="showSection('saved-items')" id="menuSaved">
+                                <i class="fas fa-bookmark"></i>
+                                <span>Saved Items</span>
+                            </li>
+                            <li class="menu-item" onclick="showSection('my-applications')" id="menuApplications">
+                                <i class="fas fa-briefcase"></i>
+                                <span>My Applications</span>
+                            </li>
+                            <li class="menu-item" onclick="showSection('my-posts')" id="menuPosts">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>My Posts</span>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <!-- Main Content -->
+                <main class="profile-content">
+                    
+                    <!-- Overview Section -->
+                    <div id="section-overview" class="section-content active">
+                        <div class="content-header">
+                            <h2><i class="fas fa-chart-line"></i> Dashboard Overview</h2>
+                        </div>
+
+                        <div id="overviewContent">
+                            <!-- Content will be loaded by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Saved Items Section -->
+                    <div id="section-saved-items" class="section-content">
+                        <div class="content-header">
+                            <h2><i class="fas fa-bookmark"></i> Saved Items</h2>
+                            <div class="tab-buttons">
+                                <button class="tab-btn active" onclick="switchTab('saved-jobs')">Jobs</button>
+                                <button class="tab-btn" onclick="switchTab('saved-services')">Services</button>
+                            </div>
+                        </div>
+
+                        <div id="tab-saved-jobs" class="tab-content active">
+                            <div class="items-grid" id="savedJobsList"></div>
+                        </div>
+
+                        <div id="tab-saved-services" class="tab-content">
+                            <div class="items-grid" id="savedServicesList"></div>
+                        </div>
+                    </div>
+
+                    <!-- My Applications Section -->
+                    <div id="section-my-applications" class="section-content">
+                        <div class="content-header">
+                            <h2><i class="fas fa-briefcase"></i> My Job Applications</h2>
+                        </div>
+                        <div class="items-grid" id="applicationsList"></div>
+                    </div>
+
+                    <!-- My Posts Section -->
+                    <div id="section-my-posts" class="section-content">
+                        <div class="content-header">
+                            <h2><i class="fas fa-plus-circle"></i> My Posted Jobs</h2>
+                        </div>
+                        <div class="items-grid" id="myPostsList"></div>
+                    </div>
+
+                    <!-- Edit Profile Section -->
+                    <div id="section-edit-profile" class="section-content">
+                        <div class="content-header">
+                            <h2><i class="fas fa-user-edit"></i> Edit Profile</h2>
+                        </div>
+
+                        <form class="edit-form" onsubmit="return handleUpdateProfile(event)">
+                            <div class="form-group">
+                                <label for="editName">Full Name</label>
+                                <input type="text" id="editName" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editPhone">Phone Number</label>
+                                <input type="tel" id="editPhone" maxlength="10" required disabled>
+                                <p class="help-text" style="font-size: 0.8rem; color: #6b7280; margin-top: 0.25rem;">Phone number cannot be changed</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editLocation">Location</label>
+                                <input type="text" id="editLocation" required>
+                            </div>
+
+                            <div class="form-group" id="companyField" style="display: none;">
+                                <label for="editCompany">Company/Shop Name</label>
+                                <input type="text" id="editCompany">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="editPassword">New Password (leave blank to keep current)</label>
+                                <input type="password" id="editPassword" minlength="6">
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn-save">
+                                    <i class="fas fa-save"></i> Save Changes
+                                </button>
+                                <button type="button" class="btn-cancel" onclick="showSection('overview')">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </main>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> NearByNow</h3>
+                    <p>Connecting local opportunities in Tier 2 & Tier 3 cities</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="jobs.html">Jobs</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="login.html">Login</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>For Providers</h4>
+                    <ul>
+                        <li><a href="post-job.html">Post a Job</a></li>
+                        <li><a href="post-service.html">Add Service</a></li>
+                        <li><a href="register.html">Register</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +91 98765-43210</li>
+                        <li><i class="fas fa-envelope"></i> info@nearbynow.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Rourkela, Odisha</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 NearByNow. All rights reserved. | Made for Tier 2 & 3 Cities</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="data/mockData.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        let currentUser = null;
+
+        // Check if user is logged in
+        window.addEventListener('DOMContentLoaded', function() {
+            currentUser = getCurrentUser();
+            
+            if (!currentUser) {
+                alert('Please login to view your profile');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            loadUserProfile();
+            loadOverview();
+            loadSavedItems();
+            loadApplications();
+            loadMyPosts();
+            populateEditForm();
+            customizeMenuByUserType();
+        });
+
+        // Load user profile
+        function loadUserProfile() {
+            const avatar = document.getElementById('userAvatar');
+            const userName = document.getElementById('userName');
+            const userLocation = document.getElementById('userLocation');
+            const userTypeBadge = document.getElementById('userTypeBadge');
+            const userStats = document.getElementById('userStats');
+
+            // Set avatar initial
+            avatar.innerHTML = `<i class="fas fa-user"></i>`;
+
+            // Set user info
+            userName.textContent = currentUser.name;
+            userLocation.textContent = currentUser.location || 'Location not set';
+
+            // Set user type badge
+            const userTypeLabels = {
+                'seeker': 'Job Seeker',
+                'jobProvider': 'Job Provider',
+                'serviceProvider': 'Service Provider'
+            };
+            userTypeBadge.textContent = userTypeLabels[currentUser.userType] || 'User';
+
+            // Set stats based on user type
+            const stats = getUserStats();
+            
+            if (currentUser.userType === 'seeker') {
+                userStats.innerHTML = `
+                    <div class="stat-item">
+                        <span class="stat-value">${stats.savedJobsCount}</span>
+                        <span class="stat-label">Saved Jobs</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">${stats.savedServicesCount}</span>
+                        <span class="stat-label">Saved Services</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">${stats.appliedJobsCount}</span>
+                        <span class="stat-label">Applications</span>
+                    </div>
+                `;
+            } else if (currentUser.userType === 'jobProvider') {
+                userStats.innerHTML = `
+                    <div class="stat-item">
+                        <span class="stat-value">${stats.postedJobsCount}</span>
+                        <span class="stat-label">Posted Jobs</span>
+                    </div>
+                `;
+            } else if (currentUser.userType === 'serviceProvider') {
+                userStats.innerHTML = `
+                    <div class="stat-item">
+                        <span class="stat-value">1</span>
+                        <span class="stat-label">Service Listed</span>
+                    </div>
+                `;
+            }
+        }
+
+        // Customize menu by user type
+        function customizeMenuByUserType() {
+            const menuSaved = document.getElementById('menuSaved');
+            const menuApplications = document.getElementById('menuApplications');
+            const menuPosts = document.getElementById('menuPosts');
+
+            if (currentUser.userType === 'jobProvider') {
+                menuSaved.style.display = 'none';
+                menuApplications.style.display = 'none';
+                menuPosts.querySelector('span').textContent = 'My Posted Jobs';
+            } else if (currentUser.userType === 'serviceProvider') {
+                menuSaved.style.display = 'none';
+                menuApplications.style.display = 'none';
+                menuPosts.querySelector('span').textContent = 'My Service';
+            } else {
+                menuPosts.querySelector('span').textContent = 'My Activity';
+            }
+        }
+
+        // Load overview
+        function loadOverview() {
+            const overviewContent = document.getElementById('overviewContent');
+            const stats = getUserStats();
+
+            if (currentUser.userType === 'seeker') {
+                overviewContent.innerHTML = `
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                        <div style="padding: 1.5rem; background: #eff6ff; border-radius: 0.75rem;">
+                            <i class="fas fa-bookmark" style="font-size: 2rem; color: #2563eb; margin-bottom: 0.5rem;"></i>
+                            <h3 style="font-size: 2rem; font-weight: 700; color: #1f2937; margin-bottom: 0.25rem;">${stats.savedJobsCount}</h3>
+                            <p style="color: #6b7280; font-size: 0.9rem;">Saved Jobs</p>
+                        </div>
+                        <div style="padding: 1.5rem; background: #f0fdf4; border-radius: 0.75rem;">
+                            <i class="fas fa-wrench" style="font-size: 2rem; color: #10b981; margin-bottom: 0.5rem;"></i>
+                            <h3 style="font-size: 2rem; font-weight: 700; color: #1f2937; margin-bottom: 0.25rem;">${stats.savedServicesCount}</h3>
+                            <p style="color: #6b7280; font-size: 0.9rem;">Saved Services</p>
+                        </div>
+                        <div style="padding: 1.5rem; background: #fef3c7; border-radius: 0.75rem;">
+                            <i class="fas fa-paper-plane" style="font-size: 2rem; color: #f59e0b; margin-bottom: 0.5rem;"></i>
+                            <h3 style="font-size: 2rem; font-weight: 700; color: #1f2937; margin-bottom: 0.25rem;">${stats.appliedJobsCount}</h3>
+                            <p style="color: #6b7280; font-size: 0.9rem;">Applications Sent</p>
+                        </div>
+                    </div>
+                    <div style="padding: 1.5rem; background: #f9fafb; border-radius: 0.75rem; border-left: 4px solid #2563eb;">
+                        <h3 style="font-size: 1.125rem; color: #1f2937; margin-bottom: 0.5rem;">Welcome, ${currentUser.name}!</h3>
+                        <p style="color: #6b7280; line-height: 1.6;">Keep exploring jobs and services near you. Save items you like and apply to jobs directly.</p>
+                    </div>
+                `;
+            } else if (currentUser.userType === 'jobProvider') {
+                overviewContent.innerHTML = `
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                        <div style="padding: 1.5rem; background: #eff6ff; border-radius: 0.75rem;">
+                            <i class="fas fa-briefcase" style="font-size: 2rem; color: #2563eb; margin-bottom: 0.5rem;"></i>
+                            <h3 style="font-size: 2rem; font-weight: 700; color: #1f2937; margin-bottom: 0.25rem;">${stats.postedJobsCount}</h3>
+                            <p style="color: #6b7280; font-size: 0.9rem;">Jobs Posted</p>
+                        </div>
+                    </div>
+                    <div style="padding: 1.5rem; background: #f9fafb; border-radius: 0.75rem; border-left: 4px solid #10b981;">
+                        <h3 style="font-size: 1.125rem; color: #1f2937; margin-bottom: 0.5rem;">Welcome, ${currentUser.name}!</h3>
+                        <p style="color: #6b7280; line-height: 1.6;">Manage your job postings and find the right candidates for your business.</p>
+                        <a href="post-job.html" class="btn-profile" style="margin-top: 1rem; display: inline-flex;">
+                            <i class="fas fa-plus"></i> Post New Job
+                        </a>
+                    </div>
+                `;
+            } else if (currentUser.userType === 'serviceProvider') {
+                overviewContent.innerHTML = `
+                    <div style="padding: 1.5rem; background: #f9fafb; border-radius: 0.75rem; border-left: 4px solid #10b981;">
+                        <h3 style="font-size: 1.125rem; color: #1f2937; margin-bottom: 0.5rem;">Welcome, ${currentUser.name}!</h3>
+                        <p style="color: #6b7280; line-height: 1.6; margin-bottom: 1rem;">Manage your service listing and reach more local customers.</p>
+                        ${currentUser.serviceId ? 
+                            `<a href="service-details.html?id=${currentUser.serviceId}" class="btn-profile" style="display: inline-flex;">
+                                <i class="fas fa-eye"></i> View My Service
+                            </a>` :
+                            `<a href="post-service.html" class="btn-profile" style="display: inline-flex;">
+                                <i class="fas fa-plus"></i> Add My Service
+                            </a>`
+                        }
+                    </div>
+                `;
+            }
+        }
+
+        // Load saved items
+        function loadSavedItems() {
+            loadSavedJobs();
+            loadSavedServices();
+        }
+
+        // Load saved jobs
+        function loadSavedJobs() {
+            const container = document.getElementById('savedJobsList');
+            const savedJobs = currentUser.savedJobs || [];
+
+            if (savedJobs.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-bookmark"></i>
+                        <h3>No Saved Jobs</h3>
+                        <p>Jobs you save will appear here</p>
+                        <a href="jobs.html" class="btn-profile" style="display: inline-flex; margin-top: 1rem;">
+                            <i class="fas fa-search"></i> Browse Jobs
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            const jobs = savedJobs.map(id => getJobById(id)).filter(Boolean);
+
+            container.innerHTML = jobs.map(job => `
+                <div class="item-card" onclick="window.location.href='job-details.html?id=${job.id}'">
+                    <div class="item-header">
+                        <div class="item-badge ${job.type}">${job.type.charAt(0).toUpperCase() + job.type.slice(1)}</div>
+                        <div class="item-actions">
+                            <button class="btn-icon-small" onclick="event.stopPropagation(); removeSavedJob(${job.id}); loadSavedJobs();" title="Remove">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="item-title">${job.title}</h3>
+                    <div class="item-meta">
+                        <span><i class="fas fa-building"></i> ${job.company}</span>
+                        <span><i class="fas fa-rupee-sign"></i> ₹${job.salary}/${job.salaryPeriod}</span>
+                        <span><i class="fas fa-map-marker-alt"></i> ${job.distance} km</span>
+                    </div>
+                    <p class="item-description">${job.description.substring(0, 100)}...</p>
+                    <div class="item-footer">
+                        <span style="color: #6b7280; font-size: 0.875rem;">Posted ${job.postedDate}</span>
+                        <button class="btn-icon-small" style="background: #2563eb; color: white;">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load saved services
+        function loadSavedServices() {
+            const container = document.getElementById('savedServicesList');
+            const savedServices = currentUser.savedServices || [];
+
+            if (savedServices.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-bookmark"></i>
+                        <h3>No Saved Services</h3>
+                        <p>Services you save will appear here</p>
+                        <a href="services.html" class="btn-profile" style="display: inline-flex; margin-top: 1rem;">
+                            <i class="fas fa-search"></i> Browse Services
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            const services = savedServices.map(id => getServiceById(id)).filter(Boolean);
+
+            container.innerHTML = services.map(service => `
+                <div class="item-card" onclick="window.location.href='service-details.html?id=${service.id}'">
+                    <div class="item-header">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
+                                <i class="fas fa-wrench"></i>
+                            </div>
+                            <div>
+                                <h3 class="item-title" style="margin: 0;">${service.name}</h3>
+                                <p style="color: #10b981; font-size: 0.875rem; margin: 0; text-transform: capitalize;">${service.category}</p>
+                            </div>
+                        </div>
+                        <button class="btn-icon-small" onclick="event.stopPropagation(); removeSavedService(${service.id}); loadSavedServices();" title="Remove">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                    <div class="item-meta">
+                        <span><i class="fas fa-user"></i> ${service.provider}</span>
+                        <span><i class="fas fa-briefcase"></i> ${service.experience}</span>
+                        <span><i class="fas fa-map-marker-alt"></i> ${service.distance} km</span>
+                    </div>
+                    <p class="item-description">${service.description.substring(0, 100)}...</p>
+                    <div class="item-footer">
+                        <span style="color: #6b7280; font-size: 0.875rem;">${service.price}</span>
+                        <button class="btn-icon-small" style="background: #10b981; color: white;">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load applications
+        function loadApplications() {
+            const container = document.getElementById('applicationsList');
+            const appliedJobs = currentUser.appliedJobs || [];
+
+            if (appliedJobs.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-briefcase"></i>
+                        <h3>No Applications Yet</h3>
+                        <p>Jobs you apply to will appear here</p>
+                        <a href="jobs.html" class="btn-profile" style="display: inline-flex; margin-top: 1rem;">
+                            <i class="fas fa-search"></i> Find Jobs
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            const jobs = appliedJobs.map(id => getJobById(id)).filter(Boolean);
+
+            container.innerHTML = jobs.map(job => `
+                <div class="item-card" onclick="window.location.href='job-details.html?id=${job.id}'">
+                    <div class="item-header">
+                        <div class="item-badge ${job.type}">${job.type.charAt(0).toUpperCase() + job.type.slice(1)}</div>
+                        <div style="padding: 0.375rem 0.875rem; background: #dcfce7; color: #166534; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600;">
+                            Applied
+                        </div>
+                    </div>
+                    <h3 class="item-title">${job.title}</h3>
+                    <div class="item-meta">
+                        <span><i class="fas fa-building"></i> ${job.company}</span>
+                        <span><i class="fas fa-rupee-sign"></i> ₹${job.salary}/${job.salaryPeriod}</span>
+                        <span><i class="fas fa-map-marker-alt"></i> ${job.distance} km</span>
+                    </div>
+                    <p class="item-description">${job.description.substring(0, 100)}...</p>
+                    <div class="item-footer">
+                        <span style="color: #6b7280; font-size: 0.875rem;">Contact: ${job.contact}</span>
+                        <button class="btn-icon-small" style="background: #2563eb; color: white;">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load my posts
+        function loadMyPosts() {
+            const container = document.getElementById('myPostsList');
+
+            if (currentUser.userType === 'seeker') {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>No Posts</h3>
+                        <p>Job seekers cannot post jobs</p>
+                    </div>
+                `;
+                return;
+            }
+
+            if (currentUser.userType === 'jobProvider') {
+                const postedJobs = currentUser.postedJobs || [];
+
+                if (postedJobs.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-briefcase"></i>
+                            <h3>No Jobs Posted</h3>
+                            <p>Start posting jobs to find candidates</p>
+                            <a href="post-job.html" class="btn-profile" style="display: inline-flex; margin-top: 1rem;">
+                                <i class="fas fa-plus"></i> Post a Job
+                            </a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const jobs = postedJobs.map(id => getJobById(id)).filter(Boolean);
+
+                container.innerHTML = jobs.map(job => `
+                    <div class="item-card">
+                        <div class="item-header">
+                            <div class="item-badge ${job.type}">${job.type.charAt(0).toUpperCase() + job.type.slice(1)}</div>
+                            <div class="item-actions">
+                                <button class="btn-icon-small" onclick="window.location.href='job-details.html?id=${job.id}'" title="View">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon-small danger" onclick="deleteJob(${job.id})" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h3 class="item-title">${job.title}</h3>
+                        <div class="item-meta">
+                            <span><i class="fas fa-rupee-sign"></i> ₹${job.salary}/${job.salaryPeriod}</span>
+                            <span><i class="fas fa-map-marker-alt"></i> ${job.location}</span>
+                        </div>
+                        <p class="item-description">${job.description.substring(0, 100)}...</p>
+                        <div class="item-footer">
+                            <span style="color: #6b7280; font-size: 0.875rem;">Posted ${job.postedDate}</span>
+                            <span style="color: #2563eb; font-size: 0.875rem; font-weight: 600;">Active</span>
+                        </div>
+                    </div>
+                `).join('');
+            } else if (currentUser.userType === 'serviceProvider') {
+                if (currentUser.serviceId) {
+                    const service = getServiceById(currentUser.serviceId);
+                    if (service) {
+                        container.innerHTML = `
+                            <div class="item-card">
+                                <div class="item-header">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                        <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                                            <i class="fas fa-wrench"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="item-title" style="margin: 0;">${service.name}</h3>
+                                            <p style="color: #10b981; font-size: 0.875rem; margin: 0; text-transform: capitalize;">${service.category}</p>
+                                        </div>
+                                    </div>
+                                    <div class="item-actions">
+                                        <button class="btn-icon-small" onclick="window.location.href='service-details.html?id=${service.id}'" title="View">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="item-meta">
+                                    <span><i class="fas fa-briefcase"></i> ${service.experience}</span>
+                                    <span><i class="fas fa-map-marker-alt"></i> ${service.location}</span>
+                                    <span><i class="fas fa-phone"></i> ${service.phone}</span>
+                                </div>
+                                <p class="item-description">${service.description.substring(0, 100)}...</p>
+                                <div class="item-footer">
+                                    <span style="color: #6b7280; font-size: 0.875rem;">${service.price}</span>
+                                    <span style="color: ${service.available ? '#10b981' : '#6b7280'}; font-size: 0.875rem; font-weight: 600;">
+                                        ${service.available ? 'Available' : 'Unavailable'}
+                                    </span>
+                                </div>
+                            </div>
+                        `;
+                    }
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-wrench"></i>
+                            <h3>No Service Listed</h3>
+                            <p>Add your service to start getting customers</p>
+                            <a href="post-service.html" class="btn-profile" style="display: inline-flex; margin-top: 1rem;">
+                                <i class="fas fa-plus"></i> Add Service
+                            </a>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Delete job
+        function deleteJob(jobId) {
+            if (confirm('Are you sure you want to delete this job?')) {
+                // Remove from mockJobs
+                const index = mockJobs.findIndex(j => j.id === jobId);
+                if (index > -1) {
+                    mockJobs.splice(index, 1);
+                }
+
+                // Remove from user's posted jobs
+                currentUser.postedJobs = currentUser.postedJobs.filter(id => id !== jobId);
+                setCurrentUser(currentUser);
+
+                showToast('Job deleted successfully', 'success');
+                loadMyPosts();
+                loadUserProfile();
+            }
+        }
+
+        // Populate edit form
+        function populateEditForm() {
+            document.getElementById('editName').value = currentUser.name;
+            document.getElementById('editPhone').value = currentUser.phone;
+            document.getElementById('editLocation').value = currentUser.location || '';
+
+            if (currentUser.userType === 'jobProvider' && currentUser.companyName) {
+                document.getElementById('companyField').style.display = 'block';
+                document.getElementById('editCompany').value = currentUser.companyName;
+            }
+        }
+
+        // Handle update profile
+        function handleUpdateProfile(event) {
+            event.preventDefault();
+
+            currentUser.name = document.getElementById('editName').value.trim();
+            currentUser.location = document.getElementById('editLocation').value.trim();
+
+            const newPassword = document.getElementById('editPassword').value;
+            if (newPassword) {
+                currentUser.password = newPassword;
+            }
+
+            if (currentUser.userType === 'jobProvider') {
+                currentUser.companyName = document.getElementById('editCompany').value.trim();
+            }
+
+            setCurrentUser(currentUser);
+            showToast('Profile updated successfully!', 'success');
+            
+            loadUserProfile();
+            showSection('overview');
+
+            return false;
+        }
+
+        // Show section
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.section-content').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all menu items
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(`section-${sectionName}`).classList.add('active');
+
+            // Activate corresponding menu item
+            const menuMap = {
+                'overview': 0,
+                'saved-items': 1,
+                'my-applications': 2,
+                'my-posts': 3,
+                'edit-profile': -1
+            };
+
+            const menuItems = document.querySelectorAll('.menu-item');
+            const index = menuMap[sectionName];
+            if (index >= 0 && menuItems[index]) {
+                menuItems[index].classList.add('active');
+            }
+        }
+
+        // Switch tab
+        function switchTab(tabName) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Activate selected tab
+            event.target.classList.add('active');
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NearByNow - Jobs & Services Near You</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>NearByNow</span>
+                </div>
+                
+                <div class="nav-links" id="navLinks">
+                    <a href="index.html" class="active">Home</a>
+                    <a href="jobs.html">Jobs</a>
+                    <a href="services.html">Services</a>
+                    <a href="profile.html" id="profileLink" style="display: none;">Profile</a>
+                    <a href="login.html" id="loginLink">Login</a>
+                    <button class="btn btn-primary" id="logoutBtn" style="display: none;">Logout</button>
+                </div>
+
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Find Jobs & Services <span class="highlight">Near You</span></h1>
+                <p>Connecting Tier 2 & Tier 3 cities with local opportunities</p>
+                
+                <!-- Search Bar -->
+                <div class="search-container">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search for jobs or services...">
+                    </div>
+                    <div class="location-box">
+                        <i class="fas fa-location-dot"></i>
+                        <input type="text" id="locationInput" placeholder="Your location">
+                        <button class="btn-location" id="detectLocation">
+                            <i class="fas fa-crosshairs"></i>
+                        </button>
+                    </div>
+                    <button class="btn btn-primary btn-search" id="searchBtn">Search</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Access Cards -->
+    <section class="quick-access">
+        <div class="container">
+            <h2 class="section-title">What are you looking for?</h2>
+            
+            <div class="cards-grid">
+                <!-- Jobs Card -->
+                <div class="category-card">
+                    <div class="card-icon" style="background: #e3f2fd;">
+                        <i class="fas fa-briefcase" style="color: #1976d2;"></i>
+                    </div>
+                    <h3>Find Jobs</h3>
+                    <p>Daily, Monthly & Contract jobs near you</p>
+                    <a href="jobs.html" class="btn btn-secondary">Browse Jobs</a>
+                    <div class="card-stats">
+                        <span><i class="fas fa-fire"></i> 150+ Active Jobs</span>
+                    </div>
+                </div>
+
+                <!-- Services Card -->
+                <div class="category-card">
+                    <div class="card-icon" style="background: #f3e5f5;">
+                        <i class="fas fa-wrench" style="color: #7b1fa2;"></i>
+                    </div>
+                    <h3>Find Services</h3>
+                    <p>Electricians, Plumbers, Hospitals & more</p>
+                    <a href="services.html" class="btn btn-secondary">Browse Services</a>
+                    <div class="card-stats">
+                        <span><i class="fas fa-fire"></i> 200+ Services</span>
+                    </div>
+                </div>
+
+                <!-- Post Job Card -->
+                <div class="category-card">
+                    <div class="card-icon" style="background: #e8f5e9;">
+                        <i class="fas fa-plus-circle" style="color: #388e3c;"></i>
+                    </div>
+                    <h3>Post a Job</h3>
+                    <p>Employers - Find local workers quickly</p>
+                    <a href="post-job.html" class="btn btn-secondary">Post Job</a>
+                    <div class="card-stats">
+                        <span><i class="fas fa-check"></i> Free to Post</span>
+                    </div>
+                </div>
+
+                <!-- Post Service Card -->
+                <div class="category-card">
+                    <div class="card-icon" style="background: #fff3e0;">
+                        <i class="fas fa-store" style="color: #f57c00;"></i>
+                    </div>
+                    <h3>List Your Service</h3>
+                    <p>Service providers - Reach local customers</p>
+                    <a href="post-service.html" class="btn btn-secondary">Add Service</a>
+                    <div class="card-stats">
+                        <span><i class="fas fa-check"></i> Free Listing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Jobs -->
+    <section class="recent-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Recent Jobs Near You</h2>
+                <a href="jobs.html" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <div class="jobs-grid" id="recentJobs">
+                <!-- Jobs will be loaded here by JavaScript -->
+                <div class="job-card">
+                    <div class="job-card-header">
+                        <div class="job-type-badge daily">Daily</div>
+                        <div class="distance">1.5 km</div>
+                    </div>
+                    <h3>Loading jobs...</h3>
+                    <p class="company">Please wait</p>
+                    <div class="job-details">
+                        <span><i class="fas fa-rupee-sign"></i> ---</span>
+                        <span><i class="fas fa-map-marker-alt"></i> ---</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Services -->
+    <section class="recent-section" style="background: #f8f9fa;">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Popular Services Near You</h2>
+                <a href="services.html" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <div class="services-grid" id="recentServices">
+                <!-- Services will be loaded here by JavaScript -->
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                    <h3>Loading services...</h3>
+                    <p>Please wait</p>
+                    <div class="service-footer">
+                        <span class="distance">--- km</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <i class="fas fa-search step-icon"></i>
+                    <h3>Search</h3>
+                    <p>Find jobs or services near your location</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <i class="fas fa-filter step-icon"></i>
+                    <h3>Filter</h3>
+                    <p>Filter by distance, type, and category</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <i class="fas fa-phone step-icon"></i>
+                    <h3>Connect</h3>
+                    <p>Contact directly via phone or WhatsApp</p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <i class="fas fa-handshake step-icon"></i>
+                    <h3>Get Started</h3>
+                    <p>Start working or get service immediately</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> NearByNow</h3>
+                    <p>Connecting local opportunities in Tier 2 & Tier 3 cities</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="jobs.html">Jobs</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="login.html">Login</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>For Providers</h4>
+                    <ul>
+                        <li><a href="post-job.html">Post a Job</a></li>
+                        <li><a href="post-service.html">Add Service</a></li>
+                        <li><a href="register.html">Register</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +91 98765-43210</li>
+                        <li><i class="fas fa-envelope"></i> info@nearbynow.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Rourkela, Odisha</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 NearByNow. All rights reserved. | Made for Tier 2 & 3 Cities</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="data/mockData.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Load recent jobs and services on homepage
+        window.addEventListener('DOMContentLoaded', function() {
+            loadRecentJobs();
+            loadRecentServices();
+        });
+
+        // Load recent jobs
+        function loadRecentJobs() {
+            const jobsContainer = document.getElementById('recentJobs');
+            const recentJobs = mockJobs.slice(0, 3); // Get first 3 jobs
+
+            if (recentJobs.length === 0) {
+                jobsContainer.innerHTML = '<p>No jobs available at the moment.</p>';
+                return;
+            }
+
+            jobsContainer.innerHTML = recentJobs.map(job => `
+                <div class="job-card" onclick="window.location.href='job-details.html?id=${job.id}'">
+                    <div class="job-card-header">
+                        <div class="job-type-badge ${job.type}">${job.type.charAt(0).toUpperCase() + job.type.slice(1)}</div>
+                        <div class="distance">${job.distance} km</div>
+                    </div>
+                    <h3>${job.title}</h3>
+                    <p class="company"><i class="fas fa-building"></i> ${job.company}</p>
+                    <div class="job-details">
+                        <span><i class="fas fa-rupee-sign"></i> ${job.salary}/${job.salaryPeriod}</span>
+                        <span><i class="fas fa-map-marker-alt"></i> ${job.location}</span>
+                    </div>
+                    <div class="job-footer">
+                        <span class="posted-date">${job.postedDate}</span>
+                        <button class="btn-view">View Details</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load recent services
+        function loadRecentServices() {
+            const servicesContainer = document.getElementById('recentServices');
+            const recentServices = mockServices.slice(0, 4); // Get first 4 services
+
+            if (recentServices.length === 0) {
+                servicesContainer.innerHTML = '<p>No services available at the moment.</p>';
+                return;
+            }
+
+            servicesContainer.innerHTML = recentServices.map(service => `
+                <div class="service-card" onclick="window.location.href='service-details.html?id=${service.id}'">
+                    <div class="service-icon">
+                        <i class="fas ${getServiceIcon(service.category)}"></i>
+                    </div>
+                    <h3>${service.name}</h3>
+                    <p>${service.category.charAt(0).toUpperCase() + service.category.slice(1)}</p>
+                    <div class="service-footer">
+                        <span class="distance"><i class="fas fa-map-marker-alt"></i> ${service.distance} km</span>
+                        <span class="phone"><i class="fas fa-phone"></i> Call</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Get icon based on service category
+        function getServiceIcon(category) {
+            const icons = {
+                'electrician': 'fa-bolt',
+                'plumber': 'fa-wrench',
+                'painter': 'fa-paint-roller',
+                'hospital': 'fa-hospital',
+                'bank': 'fa-building-columns',
+                'car-washing': 'fa-car',
+                'repair': 'fa-screwdriver-wrench',
+                'cleaning': 'fa-broom',
+                'teaching': 'fa-book'
+            };
+            return icons[category] || 'fa-tools';
+        }
+
+        // Detect location button
+        document.getElementById('detectLocation').addEventListener('click', function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    document.getElementById('locationInput').value = 'Current Location';
+                    alert('Location detected successfully!');
+                }, function(error) {
+                    alert('Unable to detect location. Please enter manually.');
+                });
+            } else {
+                alert('Geolocation is not supported by your browser.');
+            }
+        });
+
+        // Search functionality
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const location = document.getElementById('locationInput').value;
+
+            if (!searchTerm) {
+                alert('Please enter a search term');
+                return;
+            }
+
+            // Redirect to jobs or services page based on search
+            if (searchTerm.includes('job') || searchTerm.includes('work') || searchTerm.includes('vacancy')) {
+                window.location.href = `jobs.html?search=${searchTerm}`;
+            } else {
+                window.location.href = `services.html?search=${searchTerm}`;
+            }
+        });
+    </script>
+
+
+
+</body>
+</html>

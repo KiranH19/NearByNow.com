@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post a Job - NearByNow</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Additional styles for post job page */
+        .post-job-page {
+            background: #f9fafb;
+            min-height: 100vh;
+            padding: 2rem 0 3rem;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .post-job-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        .form-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .form-header-icon {
+            width: 50px;
+            height: 50px;
+            background: #eff6ff;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 1.5rem;
+        }
+
+        .form-header-text h2 {
+            font-size: 1.5rem;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .form-header-text p {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            color: #1f2937;
+            margin-bottom: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            color: #2563eb;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #374151;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group input.error,
+        .form-group select.error,
+        .form-group textarea.error {
+            border-color: #ef4444;
+        }
+
+        .help-text {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        .job-type-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .job-type-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .job-type-card:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .job-type-card.active {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .job-type-card input[type="radio"] {
+            display: none;
+        }
+
+        .job-type-card i {
+            font-size: 2rem;
+            color: #2563eb;
+            margin-bottom: 0.75rem;
+        }
+
+        .job-type-card h4 {
+            font-size: 0.95rem;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .job-type-card p {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .salary-input-group {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .input-with-icon input {
+            padding-left: 2.75rem;
+        }
+
+        .location-input-wrapper {
+            position: relative;
+        }
+
+        .detect-location-btn {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #2563eb;
+            cursor: pointer;
+            padding: 0.5rem;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .detect-location-btn:hover {
+            color: #1e40af;
+        }
+
+        .char-count {
+            text-align: right;
+            font-size: 0.8rem;
+            color: #9ca3af;
+            margin-top: 0.25rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .btn-submit {
+            flex: 1;
+            padding: 1rem 2rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-submit:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-cancel {
+            padding: 1rem 2rem;
+            background: white;
+            color: #6b7280;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-cancel:hover {
+            border-color: #d1d5db;
+            background: #f9fafb;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-card h3 {
+            font-size: 1.125rem;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-card h3 i {
+            color: #2563eb;
+        }
+
+        .tips-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tips-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .tips-list li:last-child {
+            border-bottom: none;
+        }
+
+        .tips-list li i {
+            color: #10b981;
+            margin-top: 0.25rem;
+        }
+
+        .pricing-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .pricing-info h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-info .price {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        .pricing-info p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .pricing-features {
+            list-style: none;
+            padding: 0;
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+
+        .pricing-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pricing-features li i {
+            color: #fbbf24;
+        }
+
+        /* Preview Section */
+        .preview-toggle {
+            background: #eff6ff;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .preview-toggle h3 {
+            font-size: 1rem;
+            color: #1f2937;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: #d1d5db;
+            border-radius: 26px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #2563eb;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(24px);
+        }
+
+        .preview-card {
+            display: none;
+            background: #f9fafb;
+            border: 2px dashed #d1d5db;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .preview-card.show {
+            display: block;
+        }
+
+        .preview-card h3 {
+            font-size: 1.125rem;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .post-job-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                order: -1;
+            }
+
+            .job-type-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .salary-input-group {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-card {
+                padding: 1.5rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn-submit,
+            .btn-cancel {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>NearByNow</span>
+                </div>
+                
+                <div class="nav-links" id="navLinks">
+                    <a href="index.html">Home</a>
+                    <a href="jobs.html">Jobs</a>
+                    <a href="services.html">Services</a>
+                    <a href="profile.html" id="profileLink" style="display: none;">Profile</a>
+                    <a href="login.html" id="loginLink">Login</a>
+                    <button class="btn btn-primary" id="logoutBtn" style="display: none;">Logout</button>
+                </div>
+
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1><i class="fas fa-plus-circle"></i> Post a Job</h1>
+            <p>Find the right candidates for your business</p>
+        </div>
+    </div>
+
+    <!-- Post Job Page Content -->
+    <div class="post-job-page">
+        <div class="container">
+            <div class="post-job-container">
+                
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <!-- Pricing Card -->
+                    <div class="pricing-info">
+                        <h3>📢 Post Your Job</h3>
+                        <div class="price">FREE</div>
+                        <p>No charges for posting jobs!</p>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> Unlimited job posts</li>
+                            <li><i class="fas fa-check"></i> Reach local candidates</li>
+                            <li><i class="fas fa-check"></i> Get direct applications</li>
+                            <li><i class="fas fa-check"></i> Edit anytime</li>
+                        </ul>
+                    </div>
+
+                    <!-- Tips Card -->
+                    <div class="info-card">
+                        <h3><i class="fas fa-lightbulb"></i> Tips for Better Response</h3>
+                        <ul class="tips-list">
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Write a clear job title</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Mention exact salary amount</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Add specific requirements</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Provide accurate location</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Include work timings</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Respond to calls promptly</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Help Card -->
+                    <div class="info-card">
+                        <h3><i class="fas fa-question-circle"></i> Need Help?</h3>
+                        <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 1rem;">
+                            Contact us if you face any issues while posting your job.
+                        </p>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <a href="tel:9876543210" style="text-decoration: none; color: #2563eb; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-phone"></i> +91 98765-43210
+                            </a>
+                            <a href="mailto:support@nearbynow.com" style="text-decoration: none; color: #2563eb; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-envelope"></i> support@nearbynow.com
+                            </a>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Form -->
+                <div class="form-card">
+                    <div class="form-header">
+                        <div class="form-header-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="form-header-text">
+                            <h2>Job Details</h2>
+                            <p>Fill in the details below to post your job</p>
+                        </div>
+                    </div>
+
+                    <form id="postJobForm" onsubmit="return handlePostJob(event)">
+                        
+                        <!-- Basic Information Section -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-info-circle"></i>
+                                Basic Information
+                            </h3>
+
+                            <!-- Job Title -->
+                            <div class="form-group">
+                                <label for="jobTitle">Job Title <span class="required">*</span></label>
+                                <input 
+                                    type="text" 
+                                    id="jobTitle" 
+                                    name="jobTitle" 
+                                    placeholder="e.g., Shop Helper, Delivery Boy, Security Guard"
+                                    required
+                                    maxlength="100"
+                                >
+                                <p class="help-text">Be specific and clear about the position</p>
+                            </div>
+
+                            <!-- Company/Shop Name -->
+                            <div class="form-group">
+                                <label for="companyName">Company/Shop Name <span class="required">*</span></label>
+                                <input 
+                                    type="text" 
+                                    id="companyName" 
+                                    name="companyName" 
+                                    placeholder="Enter your company or shop name"
+                                    required
+                                    maxlength="100"
+                                >
+                            </div>
+
+                            <!-- Job Type -->
+                            <div class="form-group">
+                                <label>Job Type <span class="required">*</span></label>
+                                <div class="job-type-cards">
+                                    <div class="job-type-card" onclick="selectJobType('daily')">
+                                        <i class="fas fa-calendar-day"></i>
+                                        <h4>Daily Job</h4>
+                                        <p>₹500-800/day</p>
+                                        <input type="radio" name="jobType" value="daily" id="typeDaily">
+                                    </div>
+                                    <div class="job-type-card" onclick="selectJobType('monthly')">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <h4>Monthly Job</h4>
+                                        <p>₹8,000-15,000/mo</p>
+                                        <input type="radio" name="jobType" value="monthly" id="typeMonthly">
+                                    </div>
+                                    <div class="job-type-card" onclick="selectJobType('contract')">
+                                        <i class="fas fa-file-contract"></i>
+                                        <h4>Contract Job</h4>
+                                        <p>Project-based</p>
+                                        <input type="radio" name="jobType" value="contract" id="typeContract">
+                                    </div>
+                                </div>
+                                <input type="hidden" id="jobType" name="jobType" required>
+                            </div>
+                        </div>
+
+                        <!-- Salary & Location Section -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-rupee-sign"></i>
+                                Salary & Location
+                            </h3>
+
+                            <!-- Salary -->
+                            <div class="form-group">
+                                <label for="salary">Salary Amount <span class="required">*</span></label>
+                                <div class="salary-input-group">
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-rupee-sign input-icon"></i>
+                                        <input 
+                                            type="number" 
+                                            id="salary" 
+                                            name="salary" 
+                                            placeholder="Enter amount"
+                                            required
+                                            min="100"
+                                        >
+                                    </div>
+                                    <select id="salaryPeriod" name="salaryPeriod" required>
+                                        <option value="day">Per Day</option>
+                                        <option value="month">Per Month</option>
+                                        <option value="project">Per Project</option>
+                                    </select>
+                                </div>
+                                <p class="help-text">Mentioning exact salary gets more responses</p>
+                            </div>
+
+                            <!-- Location -->
+                            <div class="form-group">
+                                <label for="location">Job Location <span class="required">*</span></label>
+                                <div class="location-input-wrapper">
+                                    <input 
+                                        type="text" 
+                                        id="location" 
+                                        name="location" 
+                                        placeholder="Enter area, sector, or locality"
+                                        required
+                                    >
+                                    <button 
+                                        type="button" 
+                                        class="detect-location-btn" 
+                                        onclick="detectLocation()"
+                                        title="Use my current location"
+                                    >
+                                        <i class="fas fa-crosshairs"></i>
+                                    </button>
+                                </div>
+                                <p class="help-text">e.g., Sector 15, Rourkela</p>
+                            </div>
+                        </div>
+
+                        <!-- Job Description Section -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-align-left"></i>
+                                Job Description
+                            </h3>
+
+                            <!-- Description -->
+                            <div class="form-group">
+                                <label for="description">Job Description <span class="required">*</span></label>
+                                <textarea 
+                                    id="description" 
+                                    name="description" 
+                                    placeholder="Describe the job role, responsibilities, and work timings..."
+                                    required
+                                    maxlength="500"
+                                    oninput="updateCharCount('description', 'descCharCount', 500)"
+                                ></textarea>
+                                <div class="char-count">
+                                    <span id="descCharCount">0</span>/500 characters
+                                </div>
+                            </div>
+
+                            <!-- Requirements -->
+                            <div class="form-group">
+                                <label for="requirements">Requirements <span class="required">*</span></label>
+                                <textarea 
+                                    id="requirements" 
+                                    name="requirements" 
+                                    placeholder="List the skills, qualifications, or experience needed..."
+                                    required
+                                    maxlength="300"
+                                    oninput="updateCharCount('requirements', 'reqCharCount', 300)"
+                                ></textarea>
+                                <div class="char-count">
+                                    <span id="reqCharCount">0</span>/300 characters
+                                </div>
+                            </div>
+
+                            <!-- Experience -->
+                            <div class="form-group">
+                                <label for="experience">Experience Required</label>
+                                <select id="experience" name="experience" required>
+                                    <option value="">Select experience level</option>
+                                    <option value="Freshers welcome">Freshers Welcome</option>
+                                    <option value="0-1 year">0-1 Year</option>
+                                    <option value="1-2 years">1-2 Years</option>
+                                    <option value="2-3 years">2-3 Years</option>
+                                    <option value="3-5 years">3-5 Years</option>
+                                    <option value="5+ years">5+ Years</option>
+                                    <option value="Experienced only">Experienced Only</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Contact Information Section -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-address-book"></i>
+                                Contact Information
+                            </h3>
+
+                            <!-- Contact Person -->
+                            <div class="form-group">
+                                <label for="contactPerson">Contact Person <span class="required">*</span></label>
+                                <input 
+                                    type="text" 
+                                    id="contactPerson" 
+                                    name="contactPerson" 
+                                    placeholder="Your name"
+                                    required
+                                >
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div class="form-group">
+                                <label for="phone">Contact Number <span class="required">*</span></label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-phone input-icon"></i>
+                                    <input 
+                                        type="tel" 
+                                        id="phone" 
+                                        name="phone" 
+                                        placeholder="10-digit mobile number"
+                                        required
+                                        maxlength="10"
+                                        pattern="[0-9]{10}"
+                                    >
+                                </div>
+                                <p class="help-text">Candidates will call you on this number</p>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn-submit">
+                                <i class="fas fa-paper-plane"></i>
+                                Post Job Now
+                            </button>
+                            <button type="button" class="btn-cancel" onclick="window.location.href='jobs.html'">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> NearByNow</h3>
+                    <p>Connecting local opportunities in Tier 2 & Tier 3 cities</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="jobs.html">Jobs</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="login.html">Login</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>For Providers</h4>
+                    <ul>
+                        <li><a href="post-job.html">Post a Job</a></li>
+                        <li><a href="post-service.html">Add Service</a></li>
+                        <li><a href="register.html">Register</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +91 98765-43210</li>
+                        <li><i class="fas fa-envelope"></i> info@nearbynow.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Rourkela, Odisha</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 NearByNow. All rights reserved. | Made for Tier 2 & 3 Cities</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="data/mockData.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        // Check if user is logged in and is a job provider
+        window.addEventListener('DOMContentLoaded', function() {
+            const currentUser = getCurrentUser();
+            
+            // Auto-fill user information if logged in
+            if (currentUser) {
+                if (currentUser.companyName) {
+                    document.getElementById('companyName').value = currentUser.companyName;
+                }
+                if (currentUser.name) {
+                    document.getElementById('contactPerson').value = currentUser.name;
+                }
+                if (currentUser.phone) {
+                    document.getElementById('phone').value = currentUser.phone;
+                }
+                if (currentUser.location) {
+                    document.getElementById('location').value = currentUser.location;
+                }
+            }
+        });
+
+        // Select job type
+        function selectJobType(type) {
+            // Remove active class from all cards
+            document.querySelectorAll('.job-type-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Add active class to selected card
+            event.currentTarget.classList.add('active');
+            
+            // Set hidden input value
+            document.getElementById('jobType').value = type;
+            
+            // Check the radio button
+            const radioId = 'type' + type.charAt(0).toUpperCase() + type.slice(1);
+            document.getElementById(radioId).checked = true;
+            
+            // Update salary period based on job type
+            const salaryPeriod = document.getElementById('salaryPeriod');
+            if (type === 'daily') {
+                salaryPeriod.value = 'day';
+            } else if (type === 'monthly') {
+                salaryPeriod.value = 'month';
+            } else if (type === 'contract') {
+                salaryPeriod.value = 'project';
+            }
+        }
+
+        // Update character count
+        function updateCharCount(textareaId, counterId, maxLength) {
+            const textarea = document.getElementById(textareaId);
+            const counter = document.getElementById(counterId);
+            const currentLength = textarea.value.length;
+            counter.textContent = currentLength;
+            
+            if (currentLength > maxLength - 50) {
+                counter.style.color = '#ef4444';
+            } else {
+                counter.style.color = '#9ca3af';
+            }
+        }
+
+        // Detect location
+        function detectLocation() {
+            if (!navigator.geolocation) {
+                showToast('Geolocation is not supported by your browser', 'error');
+                return;
+            }
+
+            showToast('Detecting location...', 'info');
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    // In a real app, use reverse geocoding API
+                    document.getElementById('location').value = 'Current Location (Detected)';
+                    showToast('Location detected successfully', 'success');
+                },
+                function(error) {
+                    showToast('Unable to detect location. Please enter manually.', 'error');
+                }
+            );
+        }
+
+        // Phone number validation
+        document.getElementById('phone')?.addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '');
+            if (this.value.length > 10) {
+                this.value = this.value.slice(0, 10);
+            }
+        });
+
+        // Handle post job form submission
+        function handlePostJob(event) {
+            event.preventDefault();
+
+            // Get form values
+            const formData = {
+                id: Date.now(),
+                title: document.getElementById('jobTitle').value.trim(),
+                company: document.getElementById('companyName').value.trim(),
+                type: document.getElementById('jobType').value,
+                salary: parseInt(document.getElementById('salary').value),
+                salaryPeriod: document.getElementById('salaryPeriod').value,
+                location: document.getElementById('location').value.trim(),
+                description: document.getElementById('description').value.trim(),
+                requirements: document.getElementById('requirements').value.trim(),
+                experience: document.getElementById('experience').value,
+                contact: document.getElementById('phone').value.trim(),
+                postedBy: document.getElementById('contactPerson').value.trim(),
+                postedDate: new Date().toISOString().split('T')[0],
+                distance: 0 // Default distance
+            };
+
+            // Validation
+            if (!formData.type) {
+                showToast('Please select a job type', 'error');
+                return false;
+            }
+
+            if (!validatePhone(formData.contact)) {
+                showToast('Please enter a valid 10-digit phone number', 'error');
+                return false;
+            }
+
+            // Add to mockJobs array (in real app, send to backend)
+            mockJobs.unshift(formData);
+
+            // Update user's posted jobs
+            const currentUser = getCurrentUser();
+            if (currentUser) {
+                if (!currentUser.postedJobs) {
+                    currentUser.postedJobs = [];
+                }
+                currentUser.postedJobs.push(formData.id);
+                setCurrentUser(currentUser);
+            }
+
+            // Show success message
+            showToast('Job posted successfully!', 'success');
+
+            // Redirect to job details page after 1.5 seconds
+            setTimeout(() => {
+                window.location.href = `job-details.html?id=${formData.id}`;
+            }, 1500);
+
+            return false;
+        }
+
+        // Form validation on input
+        const form = document.getElementById('postJobForm');
+        form.addEventListener('input', function(e) {
+            if (e.target.classList.contains('error')) {
+                e.target.classList.remove('error');
+            }
+        });
+    </script>
+</body>
+</html>

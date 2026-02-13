@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Jobs Near You - NearByNow</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Additional styles for jobs page */
+        .jobs-page {
+            background: #f9fafb;
+            min-height: 100vh;
+            padding-bottom: 3rem;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .jobs-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* Filters Sidebar */
+        .filters-sidebar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .filters-header h3 {
+            font-size: 1.25rem;
+            color: #1f2937;
+        }
+
+        .clear-filters {
+            color: #2563eb;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .clear-filters:hover {
+            text-decoration: underline;
+        }
+
+        .filter-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-group h4 {
+            font-size: 0.95rem;
+            color: #374151;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            cursor: pointer;
+        }
+
+        .filter-option input[type="checkbox"],
+        .filter-option input[type="radio"] {
+            cursor: pointer;
+        }
+
+        .filter-option label {
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #6b7280;
+            flex: 1;
+        }
+
+        .filter-count {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            background: #f3f4f6;
+            padding: 0.125rem 0.5rem;
+            border-radius: 1rem;
+        }
+
+        .distance-slider {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .distance-value {
+            text-align: center;
+            font-weight: 600;
+            color: #2563eb;
+            margin-top: 0.5rem;
+        }
+
+        /* Jobs Content */
+        .jobs-content {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .jobs-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .results-count {
+            font-size: 1rem;
+            color: #6b7280;
+        }
+
+        .results-count strong {
+            color: #1f2937;
+        }
+
+        .sort-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sort-dropdown select {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .sort-dropdown select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .jobs-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .job-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .job-card:hover {
+            border-color: #2563eb;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .job-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .job-type-badge {
+            padding: 0.375rem 0.875rem;
+            border-radius: 0.375rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .job-type-badge.daily {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .job-type-badge.monthly {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .job-type-badge.contract {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .job-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-icon {
+            width: 35px;
+            height: 35px;
+            border: none;
+            background: #f3f4f6;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-icon:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-icon.saved {
+            background: #fecaca;
+            color: #dc2626;
+        }
+
+        .job-card h3 {
+            font-size: 1.25rem;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .company {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .job-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .job-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .job-detail-item i {
+            color: #2563eb;
+        }
+
+        .job-detail-item strong {
+            color: #1f2937;
+        }
+
+        .job-description {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .job-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .posted-date {
+            font-size: 0.875rem;
+            color: #9ca3af;
+        }
+
+        .job-footer-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-view {
+            padding: 0.625rem 1.25rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+
+        .btn-view:hover {
+            background: #1e40af;
+        }
+
+        .btn-call {
+            padding: 0.625rem 1.25rem;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+
+        .btn-call:hover {
+            background: #059669;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: #6b7280;
+        }
+
+        .no-results i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #d1d5db;
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+
+        /* Mobile Toggle Filters */
+        .mobile-filter-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+            z-index: 100;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .jobs-container {
+                grid-template-columns: 1fr;
+            }
+
+            .filters-sidebar {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                z-index: 1000;
+                overflow-y: auto;
+            }
+
+            .filters-sidebar.active {
+                display: block;
+            }
+
+            .mobile-filter-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .jobs-toolbar {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .job-footer-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-view, .btn-call {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>NearByNow</span>
+                </div>
+                
+                <div class="nav-links" id="navLinks">
+                    <a href="index.html">Home</a>
+                    <a href="jobs.html" class="active">Jobs</a>
+                    <a href="services.html">Services</a>
+                    <a href="profile.html" id="profileLink" style="display: none;">Profile</a>
+                    <a href="login.html" id="loginLink">Login</a>
+                    <button class="btn btn-primary" id="logoutBtn" style="display: none;">Logout</button>
+                </div>
+
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1><i class="fas fa-briefcase"></i> Find Jobs Near You</h1>
+            <p>Daily, Monthly & Contract jobs in your area</p>
+        </div>
+    </div>
+
+    <!-- Jobs Page Content -->
+    <div class="jobs-page">
+        <div class="container">
+            <div class="jobs-container">
+                
+                <!-- Filters Sidebar -->
+                <aside class="filters-sidebar" id="filtersSidebar">
+                    <div class="filters-header">
+                        <h3><i class="fas fa-filter"></i> Filters</h3>
+                        <button class="clear-filters" onclick="clearAllFilters()">Clear All</button>
+                    </div>
+
+                    <!-- Job Type Filter -->
+                    <div class="filter-group">
+                        <h4>Job Type</h4>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filterDaily" value="daily" onchange="applyFilters()">
+                            <label for="filterDaily">Daily Jobs</label>
+                            <span class="filter-count" id="countDaily">0</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filterMonthly" value="monthly" onchange="applyFilters()">
+                            <label for="filterMonthly">Monthly Jobs</label>
+                            <span class="filter-count" id="countMonthly">0</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filterContract" value="contract" onchange="applyFilters()">
+                            <label for="filterContract">Contract Jobs</label>
+                            <span class="filter-count" id="countContract">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Distance Filter -->
+                    <div class="filter-group">
+                        <h4>Distance from You</h4>
+                        <input 
+                            type="range" 
+                            class="distance-slider" 
+                            id="distanceSlider" 
+                            min="1" 
+                            max="10" 
+                            value="10" 
+                            oninput="updateDistanceValue(); applyFilters()"
+                        >
+                        <div class="distance-value">
+                            Within <strong id="distanceValue">10</strong> km
+                        </div>
+                    </div>
+
+                    <!-- Salary Range Filter -->
+                    <div class="filter-group">
+                        <h4>Minimum Salary</h4>
+                        <div class="filter-option">
+                            <input type="radio" name="salary" id="salaryAll" value="0" checked onchange="applyFilters()">
+                            <label for="salaryAll">Any Amount</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" name="salary" id="salary5000" value="5000" onchange="applyFilters()">
+                            <label for="salary5000">Above ₹5,000</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" name="salary" id="salary10000" value="10000" onchange="applyFilters()">
+                            <label for="salary10000">Above ₹10,000</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" name="salary" id="salary15000" value="15000" onchange="applyFilters()">
+                            <label for="salary15000">Above ₹15,000</label>
+                        </div>
+                    </div>
+
+                    <!-- Experience Filter -->
+                    <div class="filter-group">
+                        <h4>Experience Required</h4>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filterFreshers" value="freshers" onchange="applyFilters()">
+                            <label for="filterFreshers">Freshers Welcome</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="filterExperienced" value="experienced" onchange="applyFilters()">
+                            <label for="filterExperienced">Experience Required</label>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Jobs Content -->
+                <main class="jobs-content">
+                    <div class="jobs-toolbar">
+                        <div class="results-count">
+                            Showing <strong id="jobCount">0</strong> jobs
+                        </div>
+                        <div class="sort-dropdown">
+                            <label for="sortBy">Sort by:</label>
+                            <select id="sortBy" onchange="sortJobs()">
+                                <option value="recent">Most Recent</option>
+                                <option value="distance">Nearest First</option>
+                                <option value="salary-high">Salary: High to Low</option>
+                                <option value="salary-low">Salary: Low to High</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Jobs Grid -->
+                    <div class="jobs-grid" id="jobsGrid">
+                        <!-- Jobs will be loaded here by JavaScript -->
+                        <div class="no-results">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <h3>Loading jobs...</h3>
+                            <p>Please wait</p>
+                        </div>
+                    </div>
+                </main>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Filter Toggle Button -->
+    <button class="mobile-filter-toggle" onclick="toggleMobileFilters()">
+        <i class="fas fa-filter"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> NearByNow</h3>
+                    <p>Connecting local opportunities in Tier 2 & Tier 3 cities</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="jobs.html">Jobs</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="login.html">Login</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>For Providers</h4>
+                    <ul>
+                        <li><a href="post-job.html">Post a Job</a></li>
+                        <li><a href="post-service.html">Add Service</a></li>
+                        <li><a href="register.html">Register</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +91 98765-43210</li>
+                        <li><i class="fas fa-envelope"></i> info@nearbynow.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Rourkela, Odisha</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 NearByNow. All rights reserved. | Made for Tier 2 & 3 Cities</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="data/mockData.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/jobs.js"></script>
+
+    <script>
+        // Global variables
+        let allJobs = [];
+        let filteredJobs = [];
+
+        // Initialize page
+        window.addEventListener('DOMContentLoaded', function() {
+            loadJobs();
+            updateFilterCounts();
+            
+            // Check for search parameter
+            const searchParam = getUrlParameter('search');
+            if (searchParam) {
+                // Filter jobs based on search
+                filteredJobs = searchJobs(searchParam);
+                displayJobs(filteredJobs);
+            }
+        });
+
+        // Load all jobs
+        function loadJobs() {
+            allJobs = [...mockJobs];
+            filteredJobs = [...mockJobs];
+            displayJobs(filteredJobs);
+        }
+
+        // Display jobs
+        function displayJobs(jobs) {
+            const jobsGrid = document.getElementById('jobsGrid');
+            const jobCount = document.getElementById('jobCount');
+            
+            jobCount.textContent = jobs.length;
+
+            if (jobs.length === 0) {
+                jobsGrid.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-briefcase"></i>
+                        <h3>No jobs found</h3>
+                        <p>Try adjusting your filters or search criteria</p>
+                    </div>
+                `;
+                return;
+            }
+
+            jobsGrid.innerHTML = jobs.map(job => `
+                <div class="job-card" onclick="goToJobDetails(${job.id})">
+                    <div class="job-card-header">
+                        <div class="job-type-badge ${job.type}">${job.type.charAt(0).toUpperCase() + job.type.slice(1)}</div>
+                        <div class="job-actions">
+                            <button class="btn-icon ${isJobSaved(job.id) ? 'saved' : ''}" onclick="event.stopPropagation(); toggleSaveJob(${job.id})" title="Save job">
+                                <i class="fas fa-bookmark"></i>
+                            </button>
+                            <button class="btn-icon" onclick="event.stopPropagation(); shareJob(${JSON.stringify(job).replace(/"/g, '&quot;')})" title="Share">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <h3>${job.title}</h3>
+                    <p class="company"><i class="fas fa-building"></i> ${job.company}</p>
+                    
+                    <div class="job-details">
+                        <div class="job-detail-item">
+                            <i class="fas fa-rupee-sign"></i>
+                            <strong>₹${job.salary}/${job.salaryPeriod}</strong>
+                        </div>
+                        <div class="job-detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${job.distance} km away</span>
+                        </div>
+                        <div class="job-detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span>${formatDate(job.postedDate)}</span>
+                        </div>
+                    </div>
+                    
+                    <p class="job-description">${job.description.substring(0, 120)}...</p>
+                    
+                    <div class="job-footer">
+                        <span class="posted-date">Posted by ${job.postedBy}</span>
+                        <div class="job-footer-actions">
+                            <button class="btn-call" onclick="event.stopPropagation(); makeCall('${job.contact}')">
+                                <i class="fas fa-phone"></i> Call Now
+                            </button>
+                            <button class="btn-view">
+                                <i class="fas fa-arrow-right"></i> View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Apply filters
+        function applyFilters() {
+            let filtered = [...allJobs];
+
+            // Filter by job type
+            const typeFilters = [];
+            if (document.getElementById('filterDaily').checked) typeFilters.push('daily');
+            if (document.getElementById('filterMonthly').checked) typeFilters.push('monthly');
+            if (document.getElementById('filterContract').checked) typeFilters.push('contract');
+            
+            if (typeFilters.length > 0) {
+                filtered = filtered.filter(job => typeFilters.includes(job.type));
+            }
+
+            // Filter by distance
+            const maxDistance = parseFloat(document.getElementById('distanceSlider').value);
+            filtered = filtered.filter(job => job.distance <= maxDistance);
+
+            // Filter by salary
+            const minSalary = parseInt(document.querySelector('input[name="salary"]:checked').value);
+            if (minSalary > 0) {
+                filtered = filtered.filter(job => job.salary >= minSalary);
+            }
+
+            // Filter by experience
+            const freshersChecked = document.getElementById('filterFreshers').checked;
+            const experiencedChecked = document.getElementById('filterExperienced').checked;
+            
+            if (freshersChecked || experiencedChecked) {
+                filtered = filtered.filter(job => {
+                    const exp = job.experience.toLowerCase();
+                    if (freshersChecked && (exp.includes('fresher') || exp.includes('no experience'))) return true;
+                    if (experiencedChecked && (exp.includes('year') || exp.includes('experienced'))) return true;
+                    return false;
+                });
+            }
+
+            filteredJobs = filtered;
+            displayJobs(filteredJobs);
+        }
+
+        // Update distance value display
+        function updateDistanceValue() {
+            const value = document.getElementById('distanceSlider').value;
+            document.getElementById('distanceValue').textContent = value;
+        }
+
+        // Update filter counts
+        function updateFilterCounts() {
+            const dailyCount = mockJobs.filter(j => j.type === 'daily').length;
+            const monthlyCount = mockJobs.filter(j => j.type === 'monthly').length;
+            const contractCount = mockJobs.filter(j => j.type === 'contract').length;
+            
+            document.getElementById('countDaily').textContent = dailyCount;
+            document.getElementById('countMonthly').textContent = monthlyCount;
+            document.getElementById('countContract').textContent = contractCount;
+        }
+
+        // Clear all filters
+        function clearAllFilters() {
+            document.getElementById('filterDaily').checked = false;
+            document.getElementById('filterMonthly').checked = false;
+            document.getElementById('filterContract').checked = false;
+            document.getElementById('distanceSlider').value = 10;
+            document.getElementById('distanceValue').textContent = 10;
+            document.getElementById('salaryAll').checked = true;
+            document.getElementById('filterFreshers').checked = false;
+            document.getElementById('filterExperienced').checked = false;
+            
+            applyFilters();
+        }
+
+        // Sort jobs
+        function sortJobs() {
+            const sortBy = document.getElementById('sortBy').value;
+            
+            switch(sortBy) {
+                case 'recent':
+                    filteredJobs.sort((a, b) => new Date(b.postedDate) - new Date(a.postedDate));
+                    break;
+                case 'distance':
+                    filteredJobs.sort((a, b) => a.distance - b.distance);
+                    break;
+                case 'salary-high':
+                    filteredJobs.sort((a, b) => b.salary - a.salary);
+                    break;
+                case 'salary-low':
+                    filteredJobs.sort((a, b) => a.salary - b.salary);
+                    break;
+            }
+            
+            displayJobs(filteredJobs);
+        }
+
+        // Toggle save job
+        function toggleSaveJob(jobId) {
+            if (isJobSaved(jobId)) {
+                removeSavedJob(jobId);
+            } else {
+                saveJob(jobId);
+            }
+            // Refresh display
+            displayJobs(filteredJobs);
+        }
+
+        // Toggle mobile filters
+        function toggleMobileFilters() {
+            const sidebar = document.getElementById('filtersSidebar');
+            sidebar.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

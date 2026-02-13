@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - NearByNow</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Additional styles for login page */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem 1rem;
+        }
+
+        .auth-box {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 450px;
+            width: 100%;
+            padding: 2.5rem;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2563eb;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-logo i {
+            font-size: 2.5rem;
+        }
+
+        .auth-header h1 {
+            font-size: 1.75rem;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-header p {
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #374151;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 3rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group input.error {
+            border-color: #ef4444;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #9ca3af;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+        }
+
+        .password-toggle:hover {
+            color: #2563eb;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .remember-me label {
+            margin: 0;
+            font-size: 0.875rem;
+            color: #6b7280;
+            cursor: pointer;
+        }
+
+        .forgot-password {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 1rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-login:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e5e7eb;
+        }
+
+        .divider span {
+            padding: 0 1rem;
+        }
+
+        .demo-logins {
+            margin-bottom: 1.5rem;
+        }
+
+        .demo-title {
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        .demo-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .btn-demo {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-demo:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+            transform: translateY(-2px);
+        }
+
+        .btn-demo i {
+            font-size: 1.1rem;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .auth-footer p {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .auth-footer a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .back-home a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-home a:hover {
+            text-decoration: underline;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 9999;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-success {
+            border-left: 4px solid #22c55e;
+        }
+
+        .toast-error {
+            border-left: 4px solid #ef4444;
+        }
+
+        .toast-info {
+            border-left: 4px solid #3b82f6;
+        }
+
+        .toast i {
+            font-size: 1.25rem;
+        }
+
+        .toast-success i {
+            color: #22c55e;
+        }
+
+        .toast-error i {
+            color: #ef4444;
+        }
+
+        .toast-info i {
+            color: #3b82f6;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .auth-box {
+                padding: 2rem 1.5rem;
+            }
+
+            .auth-header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-box">
+            <!-- Header -->
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>NearByNow</span>
+                </div>
+                <h1>Welcome Back!</h1>
+                <p>Login to find jobs & services near you</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="return handleLogin(event)">
+                <!-- Phone Number -->
+                <div class="form-group">
+                    <label for="loginPhone">Phone Number</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-phone"></i>
+                        <input 
+                            type="tel" 
+                            id="loginPhone" 
+                            name="phone" 
+                            placeholder="Enter your 10-digit phone number"
+                            maxlength="10"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input 
+                            type="password" 
+                            id="loginPassword" 
+                            name="password" 
+                            placeholder="Enter your password"
+                            required
+                        >
+                        <button 
+                            type="button" 
+                            class="password-toggle" 
+                            onclick="togglePasswordVisibility('loginPassword', 'toggleIcon')"
+                        >
+                            <i class="fas fa-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Remember Me & Forgot Password -->
+                <div class="form-options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="rememberMe" name="rememberMe">
+                        <label for="rememberMe">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password" onclick="handleForgotPasswordClick(event)">Forgot Password?</a>
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+            <!-- Demo Logins -->
+            <div class="demo-logins">
+                <p class="demo-title">Quick Demo Login (For Testing)</p>
+                <div class="demo-buttons">
+                    <button class="btn-demo" onclick="demoLogin('seeker')">
+                        <i class="fas fa-user"></i>
+                        Login as Job Seeker
+                    </button>
+                    <button class="btn-demo" onclick="demoLogin('jobProvider')">
+                        <i class="fas fa-briefcase"></i>
+                        Login as Job Provider
+                    </button>
+                    <button class="btn-demo" onclick="demoLogin('serviceProvider')">
+                        <i class="fas fa-wrench"></i>
+                        Login as Service Provider
+                    </button>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="register.html">Register Now</a></p>
+            </div>
+        </div>
+
+        <!-- Back to Home -->
+        <div class="back-home">
+            <a href="index.html">
+                <i class="fas fa-arrow-left"></i>
+                Back to Home
+            </a>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="data/mockData.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+
+    <script>
+        // Handle forgot password click
+        function handleForgotPasswordClick(event) {
+            event.preventDefault();
+            const phone = document.getElementById('loginPhone').value.trim();
+            
+            if (!phone) {
+                showToast('Please enter your phone number first', 'error');
+                return;
+            }
+            
+            if (!validatePhone(phone)) {
+                showToast('Please enter a valid 10-digit phone number', 'error');
+                return;
+            }
+            
+            const user = getUserByPhone(phone);
+            
+            if (user) {
+                // In a real app, send OTP via SMS
+                const message = `Password Recovery\n\nPhone: ${phone}\n\nFor demo purposes, your password is: ${user.password}\n\nIn production, you would receive an OTP to reset your password.`;
+                alert(message);
+                showToast('Password sent! Check the alert.', 'success');
+            } else {
+                showToast('Phone number not registered. Please register first.', 'error');
+            }
+        }
+
+        // Auto-focus on phone input
+        window.addEventListener('load', function() {
+            document.getElementById('loginPhone')?.focus();
+        });
+
+        // Phone number validation on input
+        document.getElementById('loginPhone')?.addEventListener('input', function(e) {
+            // Remove non-numeric characters
+            this.value = this.value.replace(/\D/g, '');
+            
+            // Limit to 10 digits
+            if (this.value.length > 10) {
+                this.value = this.value.slice(0, 10);
+            }
+        });
+
+        // Show credentials hint
+        console.log('%c Demo Login Credentials ', 'background: #2563eb; color: white; font-size: 16px; padding: 10px;');
+        console.log('Job Seeker: 9876543210 / 123456');
+        console.log('Job Provider: 9123456789 / 123456');
+        console.log('Service Provider: 9988776655 / 123456');
+        console.log('Or use the Quick Demo Login buttons!');
+    </script>
+</body>
+</html>

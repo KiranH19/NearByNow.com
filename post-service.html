@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Your Service - NearByNow</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Additional styles for post service page */
+        .post-service-page {
+            background: #f9fafb;
+            min-height: 100vh;
+            padding: 2rem 0 3rem;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .post-service-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        .form-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .form-header-icon {
+            width: 50px;
+            height: 50px;
+            background: #f0fdf4;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #10b981;
+            font-size: 1.5rem;
+        }
+
+        .form-header-text h2 {
+            font-size: 1.5rem;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .form-header-text p {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            color: #1f2937;
+            margin-bottom: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            color: #10b981;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #374151;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .required {
+            color: #ef4444;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .form-group input.error,
+        .form-group select.error,
+        .form-group textarea.error {
+            border-color: #ef4444;
+        }
+
+        .help-text {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .category-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .category-card.active {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .category-card input[type="radio"] {
+            display: none;
+        }
+
+        .category-card i {
+            font-size: 2rem;
+            color: #10b981;
+            margin-bottom: 0.75rem;
+        }
+
+        .category-card h4 {
+            font-size: 0.95rem;
+            color: #1f2937;
+            margin: 0;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .input-with-icon input {
+            padding-left: 2.75rem;
+        }
+
+        .location-input-wrapper {
+            position: relative;
+        }
+
+        .detect-location-btn {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #10b981;
+            cursor: pointer;
+            padding: 0.5rem;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .detect-location-btn:hover {
+            color: #059669;
+        }
+
+        .char-count {
+            text-align: right;
+            font-size: 0.8rem;
+            color: #9ca3af;
+            margin-top: 0.25rem;
+        }
+
+        .services-offered-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .service-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .service-tag {
+            padding: 0.5rem 1rem;
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #10b981;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .service-tag button {
+            background: none;
+            border: none;
+            color: #166534;
+            cursor: pointer;
+            padding: 0;
+            font-size: 1rem;
+        }
+
+        .add-service-input {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .add-service-input input {
+            flex: 1;
+        }
+
+        .btn-add {
+            padding: 0.875rem 1.5rem;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add:hover {
+            background: #059669;
+        }
+
+        .availability-toggle {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f9fafb;
+            border-radius: 0.5rem;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: #d1d5db;
+            border-radius: 26px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #10b981;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(24px);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e5e7eb;
+        }
+
+        .btn-submit {
+            flex: 1;
+            padding: 1rem 2rem;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-submit:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-cancel {
+            padding: 1rem 2rem;
+            background: white;
+            color: #6b7280;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-cancel:hover {
+            border-color: #d1d5db;
+            background: #f9fafb;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-card h3 {
+            font-size: 1.125rem;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-card h3 i {
+            color: #10b981;
+        }
+
+        .tips-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tips-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .tips-list li:last-child {
+            border-bottom: none;
+        }
+
+        .tips-list li i {
+            color: #10b981;
+            margin-top: 0.25rem;
+        }
+
+        .pricing-info {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        .pricing-info h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-info .price {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        .pricing-info p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .pricing-features {
+            list-style: none;
+            padding: 0;
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+
+        .pricing-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pricing-features li i {
+            color: #fbbf24;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .post-service-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                order: -1;
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .form-card {
+                padding: 1.5rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn-submit,
+            .btn-cancel {
+                width: 100%;
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>NearByNow</span>
+                </div>
+                
+                <div class="nav-links" id="navLinks">
+                    <a href="index.html">Home</a>
+                    <a href="jobs.html">Jobs</a>
+                    <a href="services.html">Services</a>
+                    <a href="profile.html" id="profileLink" style="display: none;">Profile</a>
+                    <a href="login.html" id="loginLink">Login</a>
+                    <button class="btn btn-primary" id="logoutBtn" style="display: none;">Logout</button>
+                </div>
+
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1><i class="fas fa-plus-circle"></i> Add Your Service</h1>
+            <p>Reach local customers in your area</p>
+        </div>
+    </div>
+
+    <!-- Post Service Page Content -->
+    <div class="post-service-page">
+        <div class="container">
+            <div class="post-service-container">
+                
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <!-- Pricing Card -->
+                    <div class="pricing-info">
+                        <h3>📢 List Your Service</h3>
+                        <div class="price">FREE</div>
+                        <p>No charges for listing services!</p>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> Unlimited listings</li>
+                            <li><i class="fas fa-check"></i> Reach local customers</li>
+                            <li><i class="fas fa-check"></i> Get direct calls</li>
+                            <li><i class="fas fa-check"></i> Build your reputation</li>
+                            <li><i class="fas fa-check"></i> Update anytime</li>
+                        </ul>
+                    </div>
+
+                    <!-- Tips Card -->
+                    <div class="info-card">
+                        <h3><i class="fas fa-lightbulb"></i> Tips for More Customers</h3>
+                        <ul class="tips-list">
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Use a clear service name</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>List all services you offer</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Mention your experience</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Provide accurate location</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Keep availability updated</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>Answer calls promptly</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Help Card -->
+                    <div class="info-card">
+                        <h3><i class="fas fa-question-circle"></i> Need Help?</h3>
+                        <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 1rem;">
+                            Contact us if you face any issues while listing your service.
+                        </p>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <a href="tel:9876543210" style="text-decoration: none; color: #10b981; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-phone"></i> +91 98765-43210
+                            </a>
+                            <a href="mailto:support@nearbynow.com" style="text-decoration: none; color: #10b981; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-envelope"></i> support@nearbynow.com
+                            </a>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Form -->
+                <div class="form-card">
+                    <div class="form-header">
+                        <div class="form-header-icon">
+                            <i class="fas fa-wrench"></i>
+                        </div>
+                        <div class="form-header-text">
+                            <h2>Service Details</h2>
+                            <p>Fill in the details below to list your service</p>
+                        </div>
+                    </div>
+
+                    <form id="postServiceForm" onsubmit="return handlePostService(event)">
+                        
+                        <!-- Basic Information Section -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-info-circle"></i>
+                                Basic Information
+                            </h3>
+
+                            <!-- Service Name -->
+                            <div class="form-group">
+                                <label for="serviceName">Service Name <span class="required">*</span></label>
+                                <input 
+                                    type="text" 
+                                    id="serviceName" 
+                                    name="serviceName" 
+                                    placeholder="e.g., Ram Electrician Services, City Plumbing"
+                                    required
+                                    maxlength="100"
+                                >
+                                <p class="help-text">Choose a professional name for your service</p>
+                            </div>
+
+                            <!-- Service Category -->
+                            <div class="form-group">
+                                <label>Service Category <span class="required">*</span></label>
+                                <div class="category-grid">
+                                    <div class="category-card" onclick="selectCategory('electrician')">
+                                        <i class="fas fa-bolt"></i>
+                                        <h4>Electrician</h4>
+                                        <input type="radio" name="category" value="electrician" id="catElectrician">
+                                    </div>
+                                    <div class="category-card" onclick="selectCategory('plumber')">
+                                        <i class="fas fa-wrench"></i>
+                                        <h4>Plumber</h4>
+                                        <input type="radio" name="category" value="plumber" id="catPlumber">
+                                    </div>
+                                    <div class="category-card" onclick="selectCategory('painter')">
+                                        <i class="fas fa-paint-roller"></i>
+                                        <h4>Painter</h4>
+                                        <input type="radio" name="category" value="painter" id="catPainter">
+                                    </div>
+                                    <div class="category-card" onclick="selectCategory('carpenter')">
+                                        <i class="fas fa-hammer"></i>
+                                        <h4>Carpenter</h4>
+                                        <input type="radio" name="category" value="carpenter" id="catCarpenter">
+                                    </div>
+                                    <div class="category-card" onclick="selectCategory('car-washing')">
+                                        <i class="fas fa-car"></i>
+                                        <h4>Car Washing</h4>
+                                        <input type="radio" name="category" value="car-washing" id="catCarWashing">
+                                    </div>
+                                    <div class="category-card" onclick="selectCategory('repair')">
+                                        <i class="fas fa-screwdriver-wrench"></i>
+                                        <h4>Repair</h4>
+                                        <input type="radio" name="category" value="repair" id="catRepair">
+                                    </div>
+                                    <div class="category-card" onclick="selectCategory('cleaning')">
+                                        <i class="fas fa-broom"></i>
+                                        <h4>Cleaning</h4>
+                                        <input type="radio" name="category" value="cleaning" id="catCleaning">
+                                    </div>
+                                    <div class="category-card" onclick="selectCategory('teaching')">
+                                        <i class="fas fa-book"></i>
+                                        <h4>Teaching</h4>
+                                        <input type="radio" name="category" value="teaching" id="catTeaching">
+                                    </div>
+                                    <div class="category-card" onclick="selectCategory('other')">
+                                        <i class="fas fa-tools"></i>
+                                        <h4>Other</h4>
+                                        <input type="radio" name="category" value="other" id="catOther">
+                                    </div>
+                                </div>
+                                <input type="hidden" id="serviceCategory" name="serviceCategory" required>
+                            </div>
+
+                            <!-- Provider Name -->
+                            <div class="form-group">
+                                <label for="providerName">Your Name <span class="required">*</span></label>
+                                <input 
+                                    type="text" 
+                                    id="providerName" 
+                                    name="providerName" 
+                                    placeholder="Your full name"
+                                    required
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Service Details Section -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-align-left"></i>
+                                Service Details
+                            </h3>
+
+                            <!-- Description -->
+                            <div class="form-group">
+                                <label for="description">Service Description <span class="required">*</span></label>
+                                <textarea 
+                                    id="description" 
+                                    name="description" 
+                                    placeholder="Describe your services, expertise, and what makes you different..."
+                                    required
+                                    maxlength="500"
+                                    oninput="updateCharCount('description', 'descCharCount', 500)"
+                                ></textarea>
+                                <div class="char-count">
+                                    <span id="descCharCount">0</span>/500 characters
+                                </div>
+                            </div>
+
+                            <!-- Services Offered -->
+                            <div class="form-group">
+                                <label>Services You Offer</label>
+                                <div class="add-service-input">
+                                    <input 
+                                        type="text" 
+                                        id="serviceItem" 
+                                        placeholder="e.g., House wiring, Fan installation"
+                                    >
+                                    <button type="button" class="btn-add" onclick="addServiceItem()">
+                                        <i class="fas fa-plus"></i> Add
+                                    </button>
+                                </div>
+                                <div class="service-tags" id="serviceTags">
+                                    <!-- Service tags will be added here -->
+                                </div>
+                                <p class="help-text">Add individual services you provide</p>
+                            </div>
+
+                            <!-- Experience -->
+                            <div class="form-group">
+                                <label for="experience">Experience <span class="required">*</span></label>
+                                <select id="experience" name="experience" required>
+                                    <option value="">Select experience level</option>
+                                    <option value="1 year">1 Year</option>
+                                    <option value="2 years">2 Years</option>
+                                    <option value="3 years">3 Years</option>
+                                    <option value="5 years">5 Years</option>
+                                    <option value="7 years">7 Years</option>
+                                    <option value="10 years">10 Years</option>
+                                    <option value="15 years">15 Years</option>
+                                    <option value="20+ years">20+ Years</option>
+                                </select>
+                            </div>
+
+                            <!-- Pricing -->
+                            <div class="form-group">
+                                <label for="pricing">Pricing (Optional)</label>
+                                <input 
+                                    type="text" 
+                                    id="pricing" 
+                                    name="pricing" 
+                                    placeholder="e.g., ₹300-500/hour, ₹500/visit"
+                                >
+                                <p class="help-text">Give customers an idea of your pricing</p>
+                            </div>
+                        </div>
+
+                        <!-- Location & Contact Section -->
+                        <div class="form-section">
+                            <h3 class="section-title">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Location & Contact
+                            </h3>
+
+                            <!-- Location -->
+                            <div class="form-group">
+                                <label for="location">Service Location <span class="required">*</span></label>
+                                <div class="location-input-wrapper">
+                                    <input 
+                                        type="text" 
+                                        id="location" 
+                                        name="location" 
+                                        placeholder="Enter your area, sector, or locality"
+                                        required
+                                    >
+                                    <button 
+                                        type="button" 
+                                        class="detect-location-btn" 
+                                        onclick="detectLocation()"
+                                        title="Use my current location"
+                                    >
+                                        <i class="fas fa-crosshairs"></i>
+                                    </button>
+                                </div>
+                                <p class="help-text">e.g., Sector 15, Rourkela</p>
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div class="form-group">
+                                <label for="phone">Contact Number <span class="required">*</span></label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-phone input-icon"></i>
+                                    <input 
+                                        type="tel" 
+                                        id="phone" 
+                                        name="phone" 
+                                        placeholder="10-digit mobile number"
+                                        required
+                                        maxlength="10"
+                                        pattern="[0-9]{10}"
+                                    >
+                                </div>
+                                <p class="help-text">Customers will call you on this number</p>
+                            </div>
+
+                            <!-- Availability -->
+                            <div class="form-group">
+                                <label>Current Availability</label>
+                                <div class="availability-toggle">
+                                    <div class="toggle-switch" id="availabilityToggle" onclick="toggleAvailability()">
+                                        <div class="toggle-slider"></div>
+                                    </div>
+                                    <span id="availabilityText" style="color: #6b7280;">Currently unavailable</span>
+                                </div>
+                                <input type="hidden" id="availability" name="availability" value="false">
+                                <p class="help-text">Toggle your availability status</p>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn-submit">
+                                <i class="fas fa-paper-plane"></i>
+                                List Service Now
+                            </button>
+                            <button type="button" class="btn-cancel" onclick="window.location.href='services.html'">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> NearByNow</h3>
+                    <p>Connecting local opportunities in Tier 2 & Tier 3 cities</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="jobs.html">Jobs</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="login.html">Login</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>For Providers</h4>
+                    <ul>
+                        <li><a href="post-job.html">Post a Job</a></li>
+                        <li><a href="post-service.html">Add Service</a></li>
+                        <li><a href="register.html">Register</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +91 98765-43210</li>
+                        <li><i class="fas fa-envelope"></i> info@nearbynow.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Rourkela, Odisha</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 NearByNow. All rights reserved. | Made for Tier 2 & 3 Cities</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="data/mockData.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        // Array to store service items
+        let serviceItems = [];
+
+        // Check if user is logged in
+        window.addEventListener('DOMContentLoaded', function() {
+            const currentUser = getCurrentUser();
+            
+            // Auto-fill user information if logged in
+            if (currentUser) {
+                if (currentUser.name) {
+                    document.getElementById('providerName').value = currentUser.name;
+                }
+                if (currentUser.phone) {
+                    document.getElementById('phone').value = currentUser.phone;
+                }
+                if (currentUser.location) {
+                    document.getElementById('location').value = currentUser.location;
+                }
+                if (currentUser.serviceName) {
+                    document.getElementById('serviceName').value = currentUser.serviceName;
+                }
+                if (currentUser.serviceCategory) {
+                    selectCategory(currentUser.serviceCategory);
+                }
+            }
+        });
+
+        // Select category
+        function selectCategory(category) {
+            // Remove active class from all cards
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Add active class to selected card
+            event.currentTarget.classList.add('active');
+            
+            // Set hidden input value
+            document.getElementById('serviceCategory').value = category;
+            
+            // Check the radio button
+            const radioId = 'cat' + category.charAt(0).toUpperCase() + category.slice(1).replace('-', '');
+            const radio = document.getElementById(radioId);
+            if (radio) radio.checked = true;
+        }
+
+        // Update character count
+        function updateCharCount(textareaId, counterId, maxLength) {
+            const textarea = document.getElementById(textareaId);
+            const counter = document.getElementById(counterId);
+            const currentLength = textarea.value.length;
+            counter.textContent = currentLength;
+            
+            if (currentLength > maxLength - 50) {
+                counter.style.color = '#ef4444';
+            } else {
+                counter.style.color = '#9ca3af';
+            }
+        }
+
+        // Add service item
+        function addServiceItem() {
+            const input = document.getElementById('serviceItem');
+            const value = input.value.trim();
+            
+            if (value && !serviceItems.includes(value)) {
+                serviceItems.push(value);
+                renderServiceTags();
+                input.value = '';
+            }
+        }
+
+        // Remove service item
+        function removeServiceItem(item) {
+            serviceItems = serviceItems.filter(i => i !== item);
+            renderServiceTags();
+        }
+
+        // Render service tags
+        function renderServiceTags() {
+            const tagsContainer = document.getElementById('serviceTags');
+            
+            if (serviceItems.length === 0) {
+                tagsContainer.innerHTML = '';
+                return;
+            }
+            
+            tagsContainer.innerHTML = serviceItems.map(item => `
+                <div class="service-tag">
+                    <span>${item}</span>
+                    <button type="button" onclick="removeServiceItem('${item}')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // Toggle availability
+        function toggleAvailability() {
+            const toggle = document.getElementById('availabilityToggle');
+            const text = document.getElementById('availabilityText');
+            const input = document.getElementById('availability');
+            
+            toggle.classList.toggle('active');
+            
+            if (toggle.classList.contains('active')) {
+                text.textContent = 'Currently available';
+                text.style.color = '#10b981';
+                input.value = 'true';
+            } else {
+                text.textContent = 'Currently unavailable';
+                text.style.color = '#6b7280';
+                input.value = 'false';
+            }
+        }
+
+        // Detect location
+        function detectLocation() {
+            if (!navigator.geolocation) {
+                showToast('Geolocation is not supported by your browser', 'error');
+                return;
+            }
+
+            showToast('Detecting location...', 'info');
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    document.getElementById('location').value = 'Current Location (Detected)';
+                    showToast('Location detected successfully', 'success');
+                },
+                function(error) {
+                    showToast('Unable to detect location. Please enter manually.', 'error');
+                }
+            );
+        }
+
+        // Phone number validation
+        document.getElementById('phone')?.addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '');
+            if (this.value.length > 10) {
+                this.value = this.value.slice(0, 10);
+            }
+        });
+
+        // Handle post service form submission
+        function handlePostService(event) {
+            event.preventDefault();
+
+            // Get form values
+            const formData = {
+                id: Date.now(),
+                name: document.getElementById('serviceName').value.trim(),
+                category: document.getElementById('serviceCategory').value,
+                provider: document.getElementById('providerName').value.trim(),
+                description: document.getElementById('description').value.trim(),
+                services: serviceItems,
+                experience: document.getElementById('experience').value,
+                price: document.getElementById('pricing').value.trim() || 'Contact for pricing',
+                location: document.getElementById('location').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                available: document.getElementById('availability').value === 'true',
+                distance: 0, // Default distance
+                rating: 0 // New service, no rating yet
+            };
+
+            // Validation
+            if (!formData.category) {
+                showToast('Please select a service category', 'error');
+                return false;
+            }
+
+            if (!validatePhone(formData.phone)) {
+                showToast('Please enter a valid 10-digit phone number', 'error');
+                return false;
+            }
+
+            // Add to mockServices array (in real app, send to backend)
+            mockServices.unshift(formData);
+
+            // Update user's service info
+            const currentUser = getCurrentUser();
+            if (currentUser) {
+                currentUser.serviceId = formData.id;
+                currentUser.serviceName = formData.name;
+                currentUser.serviceCategory = formData.category;
+                setCurrentUser(currentUser);
+            }
+
+            // Show success message
+            showToast('Service listed successfully!', 'success');
+
+            // Redirect to service details page after 1.5 seconds
+            setTimeout(() => {
+                window.location.href = `service-details.html?id=${formData.id}`;
+            }, 1500);
+
+            return false;
+        }
+
+        // Allow adding service item with Enter key
+        document.getElementById('serviceItem')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addServiceItem();
+            }
+        });
+    </script>
+</body>
+</html>

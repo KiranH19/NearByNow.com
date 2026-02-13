@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Services Near You - NearByNow</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Additional styles for services page */
+        .services-page {
+            background: #f9fafb;
+            min-height: 100vh;
+            padding-bottom: 3rem;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .services-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* Filters Sidebar */
+        .filters-sidebar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .filters-header h3 {
+            font-size: 1.25rem;
+            color: #1f2937;
+        }
+
+        .clear-filters {
+            color: #10b981;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .clear-filters:hover {
+            text-decoration: underline;
+        }
+
+        .filter-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-group h4 {
+            font-size: 0.95rem;
+            color: #374151;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .category-grid {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-item:hover {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .category-item.active {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .category-item input[type="checkbox"] {
+            display: none;
+        }
+
+        .category-icon {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .category-info {
+            flex: 1;
+        }
+
+        .category-name {
+            font-weight: 500;
+            color: #1f2937;
+            font-size: 0.9rem;
+        }
+
+        .category-count {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .distance-slider {
+            width: 100%;
+            margin: 1rem 0;
+        }
+
+        .distance-value {
+            text-align: center;
+            font-weight: 600;
+            color: #10b981;
+            margin-top: 0.5rem;
+        }
+
+        /* Services Content */
+        .services-content {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .services-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .results-count {
+            font-size: 1rem;
+            color: #6b7280;
+        }
+
+        .results-count strong {
+            color: #1f2937;
+        }
+
+        .sort-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sort-dropdown select {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .sort-dropdown select:focus {
+            outline: none;
+            border-color: #10b981;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .service-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .service-card:hover {
+            border-color: #10b981;
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .service-header {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-icon-large {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            flex-shrink: 0;
+        }
+
+        .service-info {
+            flex: 1;
+        }
+
+        .service-card h3 {
+            font-size: 1.125rem;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .service-category {
+            font-size: 0.85rem;
+            color: #10b981;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .service-actions-top {
+            display: flex;
+            gap: 0.5rem;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+
+        .btn-icon {
+            width: 35px;
+            height: 35px;
+            border: none;
+            background: #f3f4f6;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-icon:hover {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-icon.saved {
+            background: #fecaca;
+            color: #dc2626;
+        }
+
+        .provider-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: #fbbf24;
+        }
+
+        .service-description {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .service-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-tag {
+            padding: 0.375rem 0.75rem;
+            background: #f0fdf4;
+            color: #166534;
+            border-radius: 0.375rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .service-details-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .service-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .service-detail-item i {
+            color: #10b981;
+        }
+
+        .distance-badge {
+            padding: 0.375rem 0.75rem;
+            background: #dbeafe;
+            color: #1e40af;
+            border-radius: 0.375rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .service-footer {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .btn-call {
+            flex: 1;
+            padding: 0.75rem;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-call:hover {
+            background: #059669;
+        }
+
+        .btn-view {
+            flex: 1;
+            padding: 0.75rem;
+            background: white;
+            color: #10b981;
+            border: 2px solid #10b981;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+
+        .btn-view:hover {
+            background: #10b981;
+            color: white;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: #6b7280;
+        }
+
+        .no-results i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #d1d5db;
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+
+        /* Mobile Toggle Filters */
+        .mobile-filter-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            z-index: 100;
+        }
+
+        .availability-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.625rem;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .availability-badge i {
+            font-size: 0.6rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .services-container {
+                grid-template-columns: 1fr;
+            }
+
+            .filters-sidebar {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                z-index: 1000;
+                overflow-y: auto;
+            }
+
+            .filters-sidebar.active {
+                display: block;
+            }
+
+            .mobile-filter-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .services-toolbar {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .service-footer {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>NearByNow</span>
+                </div>
+                
+                <div class="nav-links" id="navLinks">
+                    <a href="index.html">Home</a>
+                    <a href="jobs.html">Jobs</a>
+                    <a href="services.html" class="active">Services</a>
+                    <a href="profile.html" id="profileLink" style="display: none;">Profile</a>
+                    <a href="login.html" id="loginLink">Login</a>
+                    <button class="btn btn-primary" id="logoutBtn" style="display: none;">Logout</button>
+                </div>
+
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1><i class="fas fa-wrench"></i> Find Services Near You</h1>
+            <p>Electricians, Plumbers, Hospitals, Banks & More</p>
+        </div>
+    </div>
+
+    <!-- Services Page Content -->
+    <div class="services-page">
+        <div class="container">
+            <div class="services-container">
+                
+                <!-- Filters Sidebar -->
+                <aside class="filters-sidebar" id="filtersSidebar">
+                    <div class="filters-header">
+                        <h3><i class="fas fa-filter"></i> Filters</h3>
+                        <button class="clear-filters" onclick="clearAllFilters()">Clear All</button>
+                    </div>
+
+                    <!-- Service Categories Filter -->
+                    <div class="filter-group">
+                        <h4>Service Categories</h4>
+                        <div class="category-grid" id="categoryGrid">
+                            <!-- Categories will be loaded by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Distance Filter -->
+                    <div class="filter-group">
+                        <h4>Distance from You</h4>
+                        <input 
+                            type="range" 
+                            class="distance-slider" 
+                            id="distanceSlider" 
+                            min="1" 
+                            max="10" 
+                            value="10" 
+                            oninput="updateDistanceValue(); applyFilters()"
+                        >
+                        <div class="distance-value">
+                            Within <strong id="distanceValue">10</strong> km
+                        </div>
+                    </div>
+
+                    <!-- Availability Filter -->
+                    <div class="filter-group">
+                        <h4>Availability</h4>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="checkbox" id="filterAvailable" onchange="applyFilters()">
+                                <span style="font-size: 0.9rem; color: #6b7280;">Available Now</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Rating Filter -->
+                    <div class="filter-group">
+                        <h4>Minimum Rating</h4>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="radio" name="rating" value="0" checked onchange="applyFilters()">
+                                <span style="font-size: 0.9rem; color: #6b7280;">All Ratings</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="radio" name="rating" value="4" onchange="applyFilters()">
+                                <span style="font-size: 0.9rem; color: #6b7280;">4+ ⭐</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="radio" name="rating" value="4.5" onchange="applyFilters()">
+                                <span style="font-size: 0.9rem; color: #6b7280;">4.5+ ⭐</span>
+                            </label>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Services Content -->
+                <main class="services-content">
+                    <div class="services-toolbar">
+                        <div class="results-count">
+                            Showing <strong id="serviceCount">0</strong> services
+                        </div>
+                        <div class="sort-dropdown">
+                            <label for="sortBy">Sort by:</label>
+                            <select id="sortBy" onchange="sortServices()">
+                                <option value="distance">Nearest First</option>
+                                <option value="rating">Highest Rated</option>
+                                <option value="name">Name (A-Z)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Services Grid -->
+                    <div class="services-grid" id="servicesGrid">
+                        <!-- Services will be loaded here by JavaScript -->
+                        <div class="no-results">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <h3>Loading services...</h3>
+                            <p>Please wait</p>
+                        </div>
+                    </div>
+                </main>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Filter Toggle Button -->
+    <button class="mobile-filter-toggle" onclick="toggleMobileFilters()">
+        <i class="fas fa-filter"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> NearByNow</h3>
+                    <p>Connecting local opportunities in Tier 2 & Tier 3 cities</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="jobs.html">Jobs</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="login.html">Login</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>For Providers</h4>
+                    <ul>
+                        <li><a href="post-job.html">Post a Job</a></li>
+                        <li><a href="post-service.html">Add Service</a></li>
+                        <li><a href="register.html">Register</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +91 98765-43210</li>
+                        <li><i class="fas fa-envelope"></i> info@nearbynow.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Rourkela, Odisha</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 NearByNow. All rights reserved. | Made for Tier 2 & 3 Cities</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="data/mockData.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        // Global variables
+        let allServices = [];
+        let filteredServices = [];
+        let selectedCategories = [];
+
+        // Initialize page
+        window.addEventListener('DOMContentLoaded', function() {
+            loadCategories();
+            loadServices();
+            
+            // Check for search parameter
+            const searchParam = getUrlParameter('search');
+            if (searchParam) {
+                filteredServices = searchServices(searchParam);
+                displayServices(filteredServices);
+            }
+        });
+
+        // Load categories
+        function loadCategories() {
+            const categoryGrid = document.getElementById('categoryGrid');
+            
+            categoryGrid.innerHTML = serviceCategories.map(cat => `
+                <div class="category-item" onclick="toggleCategory('${cat.name.toLowerCase()}')">
+                    <input type="checkbox" id="cat-${cat.name.toLowerCase()}" value="${cat.name.toLowerCase()}">
+                    <div class="category-icon">
+                        <i class="fas ${cat.icon}"></i>
+                    </div>
+                    <div class="category-info">
+                        <div class="category-name">${cat.name}</div>
+                        <div class="category-count">${cat.count} services</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Toggle category selection
+        function toggleCategory(category) {
+            const item = event.currentTarget;
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            
+            checkbox.checked = !checkbox.checked;
+            item.classList.toggle('active');
+            
+            if (checkbox.checked) {
+                selectedCategories.push(category);
+            } else {
+                selectedCategories = selectedCategories.filter(c => c !== category);
+            }
+            
+            applyFilters();
+        }
+
+        // Load all services
+        function loadServices() {
+            allServices = [...mockServices];
+            filteredServices = [...mockServices];
+            displayServices(filteredServices);
+        }
+
+        // Get service icon
+        function getServiceIcon(category) {
+            const icons = {
+                'electrician': 'fa-bolt',
+                'plumber': 'fa-wrench',
+                'painter': 'fa-paint-roller',
+                'hospital': 'fa-hospital',
+                'bank': 'fa-building-columns',
+                'car-washing': 'fa-car',
+                'repair': 'fa-screwdriver-wrench',
+                'cleaning': 'fa-broom',
+                'teaching': 'fa-book'
+            };
+            return icons[category] || 'fa-tools';
+        }
+
+        // Display services
+        function displayServices(services) {
+            const servicesGrid = document.getElementById('servicesGrid');
+            const serviceCount = document.getElementById('serviceCount');
+            
+            serviceCount.textContent = services.length;
+
+            if (services.length === 0) {
+                servicesGrid.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-wrench"></i>
+                        <h3>No services found</h3>
+                        <p>Try adjusting your filters or search criteria</p>
+                    </div>
+                `;
+                return;
+            }
+
+            servicesGrid.innerHTML = services.map(service => `
+                <div class="service-card" onclick="goToServiceDetails(${service.id})">
+                    <div class="service-actions-top">
+                        <button class="btn-icon ${isServiceSaved(service.id) ? 'saved' : ''}" onclick="event.stopPropagation(); toggleSaveService(${service.id})" title="Save service">
+                            <i class="fas fa-bookmark"></i>
+                        </button>
+                        <button class="btn-icon" onclick="event.stopPropagation(); shareService(${JSON.stringify(service).replace(/"/g, '&quot;')})" title="Share">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+
+                    <div class="service-header">
+                        <div class="service-icon-large">
+                            <i class="fas ${getServiceIcon(service.category)}"></i>
+                        </div>
+                        <div class="service-info">
+                            <h3>${service.name}</h3>
+                            <div class="service-category">${service.category.replace('-', ' ')}</div>
+                            ${service.available ? '<div class="availability-badge"><i class="fas fa-circle"></i> Available</div>' : ''}
+                        </div>
+                    </div>
+
+                    <div class="provider-info">
+                        <i class="fas fa-user"></i>
+                        <span>${service.provider}</span>
+                        ${service.rating ? `
+                            <span class="rating">
+                                <i class="fas fa-star"></i>
+                                ${service.rating}
+                            </span>
+                        ` : ''}
+                    </div>
+
+                    <p class="service-description">${service.description.substring(0, 100)}...</p>
+
+                    <div class="service-features">
+                        <div class="feature-tag"><i class="fas fa-clock"></i> ${service.experience}</div>
+                        ${service.price ? `<div class="feature-tag"><i class="fas fa-rupee-sign"></i> ${service.price}</div>` : ''}
+                    </div>
+
+                    <div class="service-details-row">
+                        <div class="service-detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${service.location}</span>
+                        </div>
+                        <div class="distance-badge">
+                            ${service.distance} km
+                        </div>
+                    </div>
+
+                    <div class="service-footer">
+                        <button class="btn-call" onclick="event.stopPropagation(); makeCall('${service.phone}')">
+                            <i class="fas fa-phone"></i> Call Now
+                        </button>
+                        <button class="btn-view">
+                            <i class="fas fa-arrow-right"></i> View Details
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Apply filters
+        function applyFilters() {
+            let filtered = [...allServices];
+
+            // Filter by category
+            if (selectedCategories.length > 0) {
+                filtered = filtered.filter(service => 
+                    selectedCategories.includes(service.category)
+                );
+            }
+
+            // Filter by distance
+            const maxDistance = parseFloat(document.getElementById('distanceSlider').value);
+            filtered = filtered.filter(service => service.distance <= maxDistance);
+
+            // Filter by availability
+            const availableOnly = document.getElementById('filterAvailable').checked;
+            if (availableOnly) {
+                filtered = filtered.filter(service => service.available === true);
+            }
+
+            // Filter by rating
+            const minRating = parseFloat(document.querySelector('input[name="rating"]:checked').value);
+            if (minRating > 0) {
+                filtered = filtered.filter(service => service.rating >= minRating);
+            }
+
+            filteredServices = filtered;
+            displayServices(filteredServices);
+        }
+
+        // Update distance value display
+        function updateDistanceValue() {
+            const value = document.getElementById('distanceSlider').value;
+            document.getElementById('distanceValue').textContent = value;
+        }
+
+        // Clear all filters
+        function clearAllFilters() {
+            // Clear category selections
+            selectedCategories = [];
+            document.querySelectorAll('.category-item').forEach(item => {
+                item.classList.remove('active');
+                item.querySelector('input[type="checkbox"]').checked = false;
+            });
+            
+            // Reset distance
+            document.getElementById('distanceSlider').value = 10;
+            document.getElementById('distanceValue').textContent = 10;
+            
+            // Reset availability
+            document.getElementById('filterAvailable').checked = false;
+            
+            // Reset rating
+            document.querySelector('input[name="rating"][value="0"]').checked = true;
+            
+            applyFilters();
+        }
+
+        // Sort services
+        function sortServices() {
+            const sortBy = document.getElementById('sortBy').value;
+            
+            switch(sortBy) {
+                case 'distance':
+                    filteredServices.sort((a, b) => a.distance - b.distance);
+                    break;
+                case 'rating':
+                    filteredServices.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+                    break;
+                case 'name':
+                    filteredServices.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+            }
+            
+            displayServices(filteredServices);
+        }
+
+        // Toggle save service
+        function toggleSaveService(serviceId) {
+            if (isServiceSaved(serviceId)) {
+                removeSavedService(serviceId);
+            } else {
+                saveService(serviceId);
+            }
+            // Refresh display
+            displayServices(filteredServices);
+        }
+
+        // Go to service details
+        function goToServiceDetails(serviceId) {
+            window.location.href = `service-details.html?id=${serviceId}`;
+        }
+
+        // Toggle mobile filters
+        function toggleMobileFilters() {
+            const sidebar = document.getElementById('filtersSidebar');
+            sidebar.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Details - NearByNow</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Additional styles for job details page */
+        .job-details-page {
+            background: #f9fafb;
+            min-height: 100vh;
+            padding: 2rem 0 3rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            transition: gap 0.3s ease;
+        }
+
+        .back-button:hover {
+            gap: 1rem;
+        }
+
+        .job-details-container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        /* Main Content */
+        .job-main-content {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .job-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+        }
+
+        .job-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .job-type-badge {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .job-actions-header {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-icon-header {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-radius: 0.5rem;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-icon-header:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .btn-icon-header.saved {
+            background: #fbbf24;
+        }
+
+        .job-header h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .company-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 1.5rem;
+        }
+
+        .company-details h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .company-details p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .job-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .highlight-item {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+
+        .highlight-item i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-label {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            margin-bottom: 0.25rem;
+        }
+
+        .highlight-value {
+            font-size: 1.125rem;
+            font-weight: 700;
+        }
+
+        .job-content {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            color: #2563eb;
+        }
+
+        .section-content {
+            color: #6b7280;
+            line-height: 1.8;
+        }
+
+        .requirements-list,
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .requirements-list li,
+        .benefits-list li {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: #f3f4f6;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .requirements-list li i,
+        .benefits-list li i {
+            color: #2563eb;
+            width: 20px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .info-item {
+            padding: 1rem;
+            background: #f3f4f6;
+            border-radius: 0.5rem;
+        }
+
+        .info-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        /* Sidebar */
+        .job-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-card h3 {
+            font-size: 1.125rem;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .btn-primary-action {
+            padding: 1rem;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-primary-action:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-secondary-action {
+            padding: 1rem;
+            background: white;
+            color: #2563eb;
+            border: 2px solid #2563eb;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-secondary-action:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-success-action {
+            padding: 1rem;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-success-action:hover {
+            background: #059669;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f3f4f6;
+            border-radius: 0.5rem;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: #2563eb;
+            color: white;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contact-details {
+            flex: 1;
+        }
+
+        .contact-label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-value {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 200px;
+            background: #e5e7eb;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        .location-address {
+            color: #6b7280;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .posted-info {
+            padding: 1rem;
+            background: #eff6ff;
+            border-radius: 0.5rem;
+            border-left: 4px solid #2563eb;
+        }
+
+        .posted-info p {
+            margin-bottom: 0.5rem;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .posted-info strong {
+            color: #1f2937;
+        }
+
+        .similar-jobs {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .similar-jobs h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #1f2937;
+        }
+
+        .similar-jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .similar-job-card {
+            padding: 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .similar-job-card:hover {
+            border-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Applied Badge */
+        .applied-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .job-details-container {
+                grid-template-columns: 1fr;
+            }
+
+            .job-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .job-highlights {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .job-header {
+                padding: 1.5rem;
+            }
+
+            .job-content {
+                padding: 1.5rem;
+            }
+
+            .job-highlights {
+                grid-template-columns: 1fr;
+            }
+
+            .job-header-top {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>NearByNow</span>
+                </div>
+                
+                <div class="nav-links" id="navLinks">
+                    <a href="index.html">Home</a>
+                    <a href="jobs.html">Jobs</a>
+                    <a href="services.html">Services</a>
+                    <a href="profile.html" id="profileLink" style="display: none;">Profile</a>
+                    <a href="login.html" id="loginLink">Login</a>
+                    <button class="btn btn-primary" id="logoutBtn" style="display: none;">Logout</button>
+                </div>
+
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Job Details Page -->
+    <div class="job-details-page">
+        <div class="container">
+            <a href="jobs.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Jobs
+            </a>
+
+            <div class="job-details-container">
+                <!-- Main Content -->
+                <div class="job-main-content">
+                    <!-- Job Header -->
+                    <div class="job-header" id="jobHeader">
+                        <!-- Content will be loaded by JavaScript -->
+                        <div style="text-align: center; padding: 2rem;">
+                            <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
+                            <p>Loading job details...</p>
+                        </div>
+                    </div>
+
+                    <!-- Job Content -->
+                    <div class="job-content" id="jobContent">
+                        <!-- Content will be loaded by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="job-sidebar">
+                    <!-- Action Buttons Card -->
+                    <div class="sidebar-card">
+                        <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                        <div id="appliedStatus"></div>
+                        <div class="action-buttons" id="actionButtons">
+                            <!-- Buttons will be loaded by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Contact Information Card -->
+                    <div class="sidebar-card">
+                        <h3><i class="fas fa-address-card"></i> Contact Information</h3>
+                        <div class="contact-info" id="contactInfo">
+                            <!-- Contact info will be loaded by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Location Card -->
+                    <div class="sidebar-card">
+                        <h3><i class="fas fa-map-marker-alt"></i> Location</h3>
+                        <div class="map-container">
+                            <i class="fas fa-map" style="font-size: 2rem;"></i>
+                        </div>
+                        <p class="location-address" id="locationAddress">
+                            <!-- Location will be loaded by JavaScript -->
+                        </p>
+                    </div>
+
+                    <!-- Posted Info Card -->
+                    <div class="sidebar-card">
+                        <div class="posted-info" id="postedInfo">
+                            <!-- Posted info will be loaded by JavaScript -->
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- Similar Jobs Section -->
+            <div class="similar-jobs" id="similarJobsSection" style="display: none;">
+                <h2><i class="fas fa-briefcase"></i> Similar Jobs Nearby</h2>
+                <div class="similar-jobs-grid" id="similarJobsGrid">
+                    <!-- Similar jobs will be loaded by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> NearByNow</h3>
+                    <p>Connecting local opportunities in Tier 2 & Tier 3 cities</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="jobs.html">Jobs</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="login.html">Login</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>For Providers</h4>
+                    <ul>
+                        <li><a href="post-job.html">Post a Job</a></li>
+                        <li><a href="post-service.html">Add Service</a></li>
+                        <li><a href="register.html">Register</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +91 98765-43210</li>
+                        <li><i class="fas fa-envelope"></i> info@nearbynow.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Rourkela, Odisha</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 NearByNow. All rights reserved. | Made for Tier 2 & 3 Cities</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="data/mockData.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+        // Get job ID from URL
+        const jobId = getUrlParameter('id');
+        let currentJob = null;
+
+        // Load job details on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            if (!jobId) {
+                alert('Job not found!');
+                window.location.href = 'jobs.html';
+                return;
+            }
+
+            loadJobDetails(jobId);
+        });
+
+        // Load job details
+        function loadJobDetails(id) {
+            currentJob = getJobById(parseInt(id));
+
+            if (!currentJob) {
+                alert('Job not found!');
+                window.location.href = 'jobs.html';
+                return;
+            }
+
+            // Render job header
+            renderJobHeader(currentJob);
+            
+            // Render job content
+            renderJobContent(currentJob);
+            
+            // Render action buttons
+            renderActionButtons(currentJob);
+            
+            // Render contact info
+            renderContactInfo(currentJob);
+            
+            // Render location
+            renderLocation(currentJob);
+            
+            // Render posted info
+            renderPostedInfo(currentJob);
+            
+            // Load similar jobs
+            loadSimilarJobs(currentJob);
+        }
+
+        // Render job header
+        function renderJobHeader(job) {
+            const jobHeader = document.getElementById('jobHeader');
+            const isSaved = isJobSaved(job.id);
+
+            jobHeader.innerHTML = `
+                <div class="job-header-top">
+                    <div class="job-type-badge ${job.type}">
+                        ${job.type.charAt(0).toUpperCase() + job.type.slice(1)} Job
+                    </div>
+                    <div class="job-actions-header">
+                        <button class="btn-icon-header ${isSaved ? 'saved' : ''}" onclick="toggleSaveJob(${job.id})" title="${isSaved ? 'Unsave job' : 'Save job'}">
+                            <i class="fas fa-bookmark"></i>
+                        </button>
+                        <button class="btn-icon-header" onclick="shareCurrentJob()" title="Share job">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <h1>${job.title}</h1>
+
+                <div class="company-info">
+                    <div class="company-logo">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="company-details">
+                        <h3>${job.company}</h3>
+                        <p>${job.location}</p>
+                    </div>
+                </div>
+
+                <div class="job-highlights">
+                    <div class="highlight-item">
+                        <i class="fas fa-rupee-sign"></i>
+                        <div class="highlight-label">Salary</div>
+                        <div class="highlight-value">₹${job.salary}/${job.salaryPeriod}</div>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="highlight-label">Distance</div>
+                        <div class="highlight-value">${job.distance} km</div>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-briefcase"></i>
+                        <div class="highlight-label">Type</div>
+                        <div class="highlight-value">${job.type.charAt(0).toUpperCase() + job.type.slice(1)}</div>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-clock"></i>
+                        <div class="highlight-label">Posted</div>
+                        <div class="highlight-value">${formatDate(job.postedDate)}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render job content
+        function renderJobContent(job) {
+            const jobContent = document.getElementById('jobContent');
+
+            jobContent.innerHTML = `
+                <!-- Job Description -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-file-alt"></i>
+                        Job Description
+                    </h2>
+                    <div class="section-content">
+                        ${job.description}
+                    </div>
+                </div>
+
+                <!-- Requirements -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-clipboard-list"></i>
+                        Requirements
+                    </h2>
+                    <ul class="requirements-list">
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>${job.requirements}</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            <span>Experience: ${job.experience}</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <i class="fas fa-info-circle"></i>
+                        Additional Information
+                    </h2>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">Job Type</div>
+                            <div class="info-value">${job.type.charAt(0).toUpperCase() + job.type.slice(1)}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Salary</div>
+                            <div class="info-value">₹${job.salary}/${job.salaryPeriod}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Experience</div>
+                            <div class="info-value">${job.experience}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Posted By</div>
+                            <div class="info-value">${job.postedBy}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render action buttons
+        function renderActionButtons(job) {
+            const actionButtons = document.getElementById('actionButtons');
+            const appliedStatus = document.getElementById('appliedStatus');
+            const hasAppliedForJob = hasApplied(job.id);
+
+            if (hasAppliedForJob) {
+                appliedStatus.innerHTML = `
+                    <div class="applied-badge">
+                        <i class="fas fa-check-circle"></i>
+                        Already Applied
+                    </div>
+                `;
+            }
+
+            actionButtons.innerHTML = `
+                <button class="btn-primary-action" onclick="applyForJob(${job.id})" ${hasAppliedForJob ? 'disabled' : ''}>
+                    <i class="fas fa-paper-plane"></i>
+                    ${hasAppliedForJob ? 'Application Submitted' : 'Apply Now'}
+                </button>
+                <button class="btn-success-action" onclick="makeCall('${job.contact}')">
+                    <i class="fas fa-phone"></i>
+                    Call Employer
+                </button>
+                <button class="btn-secondary-action" onclick="openWhatsApp('${job.contact}', 'Hi, I am interested in the ${job.title} position.')">
+                    <i class="fab fa-whatsapp"></i>
+                    WhatsApp
+                </button>
+            `;
+        }
+
+        // Render contact info
+        function renderContactInfo(job) {
+            const contactInfo = document.getElementById('contactInfo');
+
+            contactInfo.innerHTML = `
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-label">Contact Person</div>
+                        <div class="contact-value">${job.postedBy}</div>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-label">Phone Number</div>
+                        <div class="contact-value">${job.contact}</div>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="contact-details">
+                        <div class="contact-label">Company</div>
+                        <div class="contact-value">${job.company}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render location
+        function renderLocation(job) {
+            const locationAddress = document.getElementById('locationAddress');
+            locationAddress.innerHTML = `
+                <i class="fas fa-map-marker-alt"></i> ${job.location}<br>
+                <strong>${job.distance} km</strong> from your location
+            `;
+        }
+
+        // Render posted info
+        function renderPostedInfo(job) {
+            const postedInfo = document.getElementById('postedInfo');
+            postedInfo.innerHTML = `
+                <p><strong>Posted:</strong> ${formatDate(job.postedDate)}</p>
+                <p><strong>Posted By:</strong> ${job.postedBy}</p>
+                <p><strong>Job ID:</strong> #${job.id}</p>
+            `;
+        }
+
+        // Load similar jobs
+        function loadSimilarJobs(job) {
+            // Get jobs of same type within 5km
+            const similarJobs = mockJobs.filter(j => 
+                j.id !== job.id && 
+                j.type === job.type && 
+                j.distance <= 5
+            ).slice(0, 3);
+
+            if (similarJobs.length > 0) {
+                document.getElementById('similarJobsSection').style.display = 'block';
+                const similarJobsGrid = document.getElementById('similarJobsGrid');
+
+                similarJobsGrid.innerHTML = similarJobs.map(j => `
+                    <div class="similar-job-card" onclick="window.location.href='job-details.html?id=${j.id}'">
+                        <div class="job-type-badge ${j.type}">${j.type.charAt(0).toUpperCase() + j.type.slice(1)}</div>
+                        <h3 style="margin: 1rem 0 0.5rem;">${j.title}</h3>
+                        <p style="color: #6b7280; margin-bottom: 1rem;">${j.company}</p>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: #6b7280;">
+                            <span><i class="fas fa-rupee-sign"></i> ₹${j.salary}/${j.salaryPeriod}</span>
+                            <span><i class="fas fa-map-marker-alt"></i> ${j.distance} km</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Toggle save job
+        function toggleSaveJob(jobId) {
+            if (isJobSaved(jobId)) {
+                removeSavedJob(jobId);
+            } else {
+                saveJob(jobId);
+            }
+            // Refresh header
+            renderJobHeader(currentJob);
+        }
+
+        // Share current job
+        function shareCurrentJob() {
+            if (currentJob) {
+                shareJob(currentJob);
+            }
+        }
+    </script>
+</body>
+</html>
